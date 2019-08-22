@@ -40,15 +40,15 @@ var path = {
         js: [
 
             'node_modules/jquery/dist/jquery.min.js',
-            'node_modules/slick-carousel/slick/slick.min.js',
-            'src/libs/mmenu/jquery.mmenu.all.js',
-            'src/libs/mhead/jquery.mhead.js',
+            //'node_modules/slick-carousel/slick/slick.min.js',
+            //'src/libs/mmenu/jquery.mmenu.all.js',
+            //'src/libs/mhead/jquery.mhead.js',
             'node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
-            'node_modules/wowjs/dist/wow.min.js',
-            'node_modules/magnific-popup/dist/jquery.magnific-popup.min.js',
-            'node_modules/jquery.maskedinput/src/jquery.maskedinput.js',
-            'node_modules/jquery-form-validator/form-validator/jquery.form-validator.min.js',
-            'src/libs/fselect/fselect.min.js',
+            //'node_modules/wowjs/dist/wow.min.js',
+            //'node_modules/magnific-popup/dist/jquery.magnific-popup.min.js',
+            //'node_modules/jquery.maskedinput/src/jquery.maskedinput.js',
+            //'node_modules/jquery-form-validator/form-validator/jquery.form-validator.min.js',
+            //'src/libs/fselect/fselect.min.js',
             'node_modules/pagepiling.js/jquery.pagepiling.min.js',
             'node_modules/jquery-mousewheel/jquery.mousewheel.js',
 

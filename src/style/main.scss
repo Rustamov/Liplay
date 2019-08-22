@@ -10,7 +10,7 @@ body {
   min-width: 320px;
   font-family: $ff-verdana;
   font-size: 20px;
-  line-height: 1.15;
+  line-height: 1.125;
   color: #000000;
   background: $color-pink;
 }
@@ -60,15 +60,11 @@ frame {
 }
 
 .section {
-  overflow: hidden;
-  //z-index: 10 !important;
-  will-change: transform;
 }
 .section-anim-inner {
   opacity: 1;
   transform: translate(0, 0) scale(0.8);
   transition: opacity 0.5s, transform 0.5s;
-  will-change: transform;
 
   .section.active & {
     opacity: 1;
@@ -132,10 +128,13 @@ frame {
   }
 
   &__text {
-    font-family: $ff-king-basil;
-    font-weight: 400;
-    font-size: px-to-rem(43);
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35);
+    width: px-to-rem(390);
+
+    &-img {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow( 2px 2px 6px rgba(0, 0, 0, 0.35));
+    }
   }
 
   &__btn {

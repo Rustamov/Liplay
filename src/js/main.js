@@ -1,5 +1,7 @@
 
 
+
+
 $(document).ready(function () {
     let sectionsId = [];
 
@@ -7,7 +9,6 @@ $(document).ready(function () {
         var sec = $(this);
 
         sectionsId.push(sec.attr('id'));
-
     });
 
     let answersRun = false;
@@ -31,10 +32,10 @@ $(document).ready(function () {
         animateAnchor: true,
 
         //events
-        onLeave: function(index, nextIndex, direction){
-            console.log(index, nextIndex, direction);
+        onLeave: function (index, nextIndex, direction) {
+
         },
-        afterLoad: function(anchorLink, index){
+        afterLoad: function (anchorLink, index) {
             if (anchorLink === 'answers') {
                 answersRun = true;
                 $.fn.pagepiling.setAllowScrolling(false);
@@ -43,12 +44,57 @@ $(document).ready(function () {
                 answersRun = false;
             }
         },
-        afterRender: function(){
+        afterRender: function () {
 
         },
     });
 
-    function answers() {
+
+    function camGif () {
+        let wrap = $('.s-top'),
+            cam = wrap.find('.s-top__cam'),
+            device = wrap.find('.s-top__cam-device'),
+            display = wrap.find('.s-top__cam-display'),
+            resultBox = wrap.find('.s-top__cam-result'),
+
+            devicetage = 1;
+
+        if ( !wrap.length ) { return };
+
+
+
+        function slideAnimate(dir) {
+            if ( scrolling || (dir === 0) ) { return };
+
+            scrolling = true;
+
+            (dir === -1) ? ++stage : --stage;
+
+            if ( stage < 1 ) {
+                stage = 1;
+                $.fn.pagepiling.moveSectionUp();
+                $.fn.pagepiling.setAllowScrolling(true);
+                $.fn.pagepiling.setKeyboardScrolling(true);
+            } else if ( stage > 6 ) {
+                stage = 6;
+                $.fn.pagepiling.moveSectionDown();
+                $.fn.pagepiling.setAllowScrolling(true);
+                $.fn.pagepiling.setKeyboardScrolling(true);
+            } else {
+                wrap.attr('data-stage', stage);
+            }
+
+            setTimeout(function () {
+                scrolling = false;
+            }, 500)
+        };
+
+
+    };
+
+    camGif();
+
+    function answers () {
         let wrap = $('.s-answers'),
             touchY,
             dir,
@@ -72,18 +118,18 @@ $(document).ready(function () {
         });
 
 
-
         wrap.on("mousewheel DOMMouseScroll", function (e) {
             slideAnimate(e.deltaY)
-            // console.log(e.deltaY);
         });
 
 
         $(window).on("keydown", function (a) {
+            let dir = ( 38 === a.keyCode || 37 === a.keyCode ) ? 1 : ( 40 === a.keyCode || 39 === a.keyCode ) && -1;
+
             if ( answersRun ) {
                 let dir = ( 38 === a.keyCode || 37 === a.keyCode ) ? 1 : ( 40 === a.keyCode || 39 === a.keyCode ) && -1;
-                slideAnimate(dir)
-                console.log(dir);
+
+                (!!dir) ? slideAnimate(dir) : '';
             }
         });
 
@@ -116,38 +162,9 @@ $(document).ready(function () {
 
     };
 
-
-    // var $animator;
-    // $animator = function () {
-    //     if ($(window).scrollTop() >= 30) return;
-    //     // ----
-    //
-    //     setInterval(function () {
-    //         $(window).off('scroll', $animator)
-    //
-    //     }, 3000)
-    //
-    // }
-    // $(window).on('scroll', $animator);
-
     answers();
 
 
-    // let ts;
-    // $(document).on('touchstart', function (e){
-    //     ts = e.originalEvent.touches[0].clientY;
-    // });
-    //
-    // $(document).on('touchend', function (e){
-    //     var te = e.originalEvent.changedTouches[0].clientY;
-    //     if(ts > te+5){
-    //         slide_down();
-    //     }else if(ts < te-5){
-    //         slide_up();
-    //     }
-    // });
-
-    // mainScrolling();
 });
 //
 // function mainScrolling() {
