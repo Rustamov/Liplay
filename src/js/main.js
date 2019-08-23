@@ -84,7 +84,7 @@ $(document).ready(function () {
 
     $('.pagepiling').pagepiling({
         menu: null,
-        direction: 'vertical',
+        direction: 'horizontal',
         verticalCentered: true,
         sectionsColor: [],
         anchors: sectionsId,
@@ -203,8 +203,8 @@ $(document).ready(function () {
         wrap.on('touchend', function (e) {
             var newTouchY = e.originalEvent.changedTouches[0].clientY;
 
-            dir = (touchY > newTouchY + 15) ? -1 :
-                (touchY < newTouchY - 15) ? 1 : 0;
+            dir = (touchY > newTouchY + 5) ? -1 :
+                (touchY < newTouchY - 5) ? 1 : 0;
 
             slideAnimate(dir);
         });
