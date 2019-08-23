@@ -1,7 +1,4 @@
 
-
-
-
 $(document).ready(function () {
     let sectionsId = [];
 
@@ -12,6 +9,78 @@ $(document).ready(function () {
     });
 
     let answersRun = false;
+
+
+    let camGif = {
+        deviceStage: 0,
+        deviceStagesCount: 2,
+        displayStage: 0,
+        displayStagesCount: 5,
+        resultBoxStage: 0,
+        resultBoxStagesCount: 4,
+        speed: 600,
+        interval: 0,
+
+        init: function() {
+            this.wrap = $('.s-top');
+            this.cam = this.wrap.find('.s-top__cam');
+            this.device = this.wrap.find('.s-top__cam-device');
+            this.display = this.wrap.find('.s-top__cam-display');
+            this.resultBox = this.wrap.find('.s-top__cam-result');
+        },
+
+        run: function () {
+            let _this =  this;
+            let nextStage =  function () {
+                _this.nextStage(_this)
+            };
+
+            _this.interval = setInterval(nextStage, _this.speed);
+        },
+
+        stop: function () {
+            let _this =  this;
+
+            clearInterval(_this.interval);
+
+            _this.deviceStage = 1;
+            _this.displayStage = 0;
+            _this.resultBoxStage = 0;
+
+            _this.setStage();
+
+        },
+
+        setStage: function () {
+            this.device.attr('data-stage', this.deviceStage);
+            this.display.attr('data-stage', this.displayStage);
+            this.resultBox.attr('data-stage', this.resultBoxStage);
+        },
+
+        nextStage: function (obj) {
+            let _this = obj;
+
+            if ( _this.deviceStage < _this.deviceStagesCount ) {
+                ++_this.deviceStage;
+            } else if ( _this.displayStage < _this.displayStagesCount ) {
+                ++_this.displayStage;
+            } else if ( _this.resultBoxStage < _this.resultBoxStagesCount ) {
+                ++_this.resultBoxStage;
+            } else {
+                _this.deviceStage = 1;
+                _this.displayStage = 0;
+                _this.resultBoxStage = 0;
+            };
+
+
+            _this.setStage();
+
+        },
+
+    };
+
+    camGif.init();
+
 
     $('.pagepiling').pagepiling({
         menu: null,
@@ -35,64 +104,87 @@ $(document).ready(function () {
         onLeave: function (index, nextIndex, direction) {
 
         },
-        afterLoad: function (anchorLink, index) {
-            if (anchorLink === 'answers') {
-                answersRun = true;
-                $.fn.pagepiling.setAllowScrolling(false);
-                $.fn.pagepiling.setKeyboardScrolling(false);
-            } else {
-                answersRun = false;
-            }
-        },
-        afterRender: function () {
 
+        afterLoad: function (anchorLink, index) {
+            pagepilingLoadStep(anchorLink, index);
+        },
+
+        afterRender: function () {
+            let initAnchorLink = $('.pp-section.active').attr('id');
+
+            pagepilingLoadStep(initAnchorLink);
         },
     });
 
 
-    function camGif () {
-        let wrap = $('.s-top'),
-            cam = wrap.find('.s-top__cam'),
-            device = wrap.find('.s-top__cam-device'),
-            display = wrap.find('.s-top__cam-display'),
-            resultBox = wrap.find('.s-top__cam-result'),
+    function pagepilingLoadStep (anchorLink, index) {
 
-            devicetage = 1;
+        if (anchorLink === 'answers') {
+            answersRun = true;
+            $.fn.pagepiling.setAllowScrolling(false);
+            $.fn.pagepiling.setKeyboardScrolling(false);
+        } else {
+            answersRun = false;
+        }
 
-        if ( !wrap.length ) { return };
-
-
-
-        function slideAnimate(dir) {
-            if ( scrolling || (dir === 0) ) { return };
-
-            scrolling = true;
-
-            (dir === -1) ? ++stage : --stage;
-
-            if ( stage < 1 ) {
-                stage = 1;
-                $.fn.pagepiling.moveSectionUp();
-                $.fn.pagepiling.setAllowScrolling(true);
-                $.fn.pagepiling.setKeyboardScrolling(true);
-            } else if ( stage > 6 ) {
-                stage = 6;
-                $.fn.pagepiling.moveSectionDown();
-                $.fn.pagepiling.setAllowScrolling(true);
-                $.fn.pagepiling.setKeyboardScrolling(true);
-            } else {
-                wrap.attr('data-stage', stage);
-            }
-
-            setTimeout(function () {
-                scrolling = false;
-            }, 500)
-        };
+        if (anchorLink === 'top') {
+            camGif.run();
+        } else {
+            camGif.stop();
+        }
+    }
 
 
-    };
 
-    camGif();
+
+
+
+
+
+    // function camGif () {
+    //     let wrap = $('.s-top'),
+    //         cam = wrap.find('.s-top__cam'),
+    //         device = wrap.find('.s-top__cam-device'),
+    //         deviceStage = 0,
+    //         deviceStagesCount = 2,
+    //         display = wrap.find('.s-top__cam-display'),
+    //         displayStage = 0,
+    //         displayStagesCount = 5,
+    //         resultBox = wrap.find('.s-top__cam-result'),
+    //         resultBoxStage = 0,
+    //         resultBoxStagesCount = 5,
+    //         speed = 700;
+    //
+    //
+    //     if ( !wrap.length ) { return };
+    //
+    //     function setStage () {
+    //         device.attr('data-stage', deviceStage);
+    //         display.attr('data-stage', displayStage);
+    //         resultBox.attr('data-stage', resultBoxStage);
+    //     };
+    //
+    //     function nextStage () {
+    //         if ( deviceStage < deviceStagesCount ) {
+    //             ++deviceStage;
+    //         } else if ( displayStage < displayStagesCount ) {
+    //             ++displayStage;
+    //         } else if ( resultBoxStage < resultBoxStagesCount ) {
+    //             ++resultBoxStage;
+    //         } else {
+    //             deviceStage = 0;
+    //             displayStage = 0;
+    //             resultBoxStage = 0;
+    //         }
+    //
+    //
+    //         setStage ();
+    //     };
+    //
+    //     setInterval(nextStage, speed);
+    // };
+
+    // camGif();
 
     function answers () {
         let wrap = $('.s-answers'),

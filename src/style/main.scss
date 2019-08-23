@@ -206,18 +206,21 @@ frame {
       left: 0;
 
       &-item {
-        display: none;
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
+        opacity: 0;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         background-size: contain;
+        transition: 0s;
 
-        &.active {
-          display: block;
+        @for $i from 1 through 2 {
+          .s-top__cam-device[data-stage="#{$i}"] &--#{$i} {
+            opacity: 1;
+          }
         }
 
         @for $i from 1 through 2 {
@@ -239,18 +242,21 @@ frame {
       height: px_to_rem(187);
 
       &-item {
-        display: none;
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
+        opacity: 0;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         background-size: contain;
+        transition: 0.1s;
 
-        &.active {
-          display: block;
+        @for $i from 1 through 5 {
+          .s-top__cam-display[data-stage="#{$i}"] &--#{$i} {
+            opacity: 1;
+          }
         }
 
         @for $i from 1 through 5 {
@@ -266,13 +272,23 @@ frame {
     &-result {
       position: absolute;
       z-index: 0;
+      opacity: 0;
       top: 0.1rem;
       left: 2.2rem;
       width: px_to_rem(179);
       height: px_to_rem(278);
       background: url(../img/sec-top-cam-result.png) 0 0 no-repeat;
       background-size: contain;
-      @include retina-image('../img/sec-top-cam-result.png', px-to-rem(179), px-to-rem(278))
+      @include retina-image('../img/sec-top-cam-result.png', px-to-rem(179), px-to-rem(278));
+
+      transition: 0.1s;
+
+      @for $i from 1 through 4 {
+        &[data-stage="#{$i}"] {
+          opacity: 1;
+          transform: translateY(px-to-rem(-$i * 50));
+        }
+      }
     }
   }
 }
