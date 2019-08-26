@@ -587,6 +587,7 @@ frame {
     left: 50%;
     top: 0;
     margin: px-to-rem(-50) 0 0 px-to-rem(-132);
+    cursor: pointer;
     transition: transform 0.5s, opacity 0.3s;
 
     &--1 {
@@ -785,6 +786,243 @@ frame {
 
 
 
+
+.popup-person {
+  &-wrap {
+    & .fancybox {
+
+      &-bg {
+        background: none;
+      }
+
+      &-content {
+        background: none;
+        color: #ffffff;
+      }
+
+      &-close-small {
+        display: none;
+      }
+
+      &-slide {
+        padding: 0;
+      }
+    }
+  }
+
+
+  display: none;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  padding: px-to-rem(20);
+
+  &__bg {
+    position: absolute;
+    z-index: 0;
+    background: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: $color-pink;
+    box-shadow: 0px 3px 24.92px 3.08px rgba(0, 0, 0, 0.3);
+  }
+
+  &__close {
+    display: inline-block;
+
+    position: absolute;
+    right: 3%;
+    top: 3%;
+    width: px-to-rem(64);
+    height: px-to-rem(64);
+    margin: 0;
+    padding: 0;
+    background: none;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &-icon {
+      position: absolute;
+      left: 50%;
+      right: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__cnt {
+    text-align: center;
+  }
+
+  &__card {
+    &-wrap {
+      margin: 0 0 px-to-rem(20);
+    }
+
+    position: relative;
+    width: px-to-rem(280);
+    height: px-to-rem(420);
+    margin: 0;
+    padding: px-to-rem(25) px-to-rem(20) px-to-rem(40);
+    background: #e5ebe9;
+    border-radius: 6px;
+
+    .popup-person--playing & {
+      pointer-events: none;
+    }
+
+    &-img {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+
+    &-logo {
+      &-wrap {
+        position: absolute;
+        right: px-to-rem(10);
+        bottom: px-to-rem(10);
+        left: px-to-rem(10);
+        text-align: center;
+      }
+
+
+      width: 100%;
+      display: inline-block;
+      vertical-align: middle;
+
+
+      &-img {
+        display: inline-block;
+        vertical-align: middle;
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    &-play {
+      position: absolute;
+      display: inline-block;
+      vertical-align: middle;
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      padding: 0;
+      background: none;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.1s;
+
+      .popup-person__card:hover & {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      .popup-person__card:active &{
+        transform: translate(-50%, -50%) scale(1.2);
+      }
+
+      .popup-person--playing & {
+        opacity: 0.3;
+      }
+
+
+    }
+
+  }
+
+
+
+  &__bottom {
+
+    &-qr {
+      margin: 0 0 px-to-rem(6);
+    }
+    &-device {
+      margin: 0 0 px-to-rem(20);
+    }
+  }
+
+  &__device {
+    &-img {
+      width: 100px;
+    }
+  }
+
+
+
+
+  @media (min-height: 700px) {
+    &__card {
+      &-wrap {
+        margin: 0 0 px-to-rem(40);
+      }
+    }
+
+    &__device {
+      &-img {
+        width: 122px;
+      }
+    }
+  }
+
+
+  @media (min-height: 800px) {
+
+  }
+
+  @media (min-height: 900px) {
+    &__card {
+      &-wrap {
+        margin: 0 0 px-to-rem(40);
+      }
+
+      width: px-to-rem(320);
+      height: px-to-rem(510);
+      padding: px-to-rem(45) px-to-rem(25) px-to-rem(95);
+      border-radius: 8px;
+
+      &-logo {
+        &-wrap {
+          bottom: px-to-rem(20);
+        }
+      }
+    }
+  }
+
+  @media (min-height: 1000px) {
+    &__card {
+      &-wrap {
+        margin: 0 0 px-to-rem(70);
+      }
+    }
+  }
+
+}
 
 
 @import '_media';

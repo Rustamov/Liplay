@@ -156,6 +156,17 @@ $color-pink: #dda6a0;
   filter: drop-shadow( 2px 2px 3px rgba(0, 0, 0, 0.25));
 }
 
+.icon-close {
+  width: px-to-rem(32);
+  height: px-to-rem(32);
+  filter: drop-shadow( 2px 2px 3px rgba(0, 0, 0, 0.25));
+}
+
+.icon-music {
+  width: px-to-rem(84);
+  height: px-to-rem(84);
+}
+
 
 
 
@@ -267,3 +278,135 @@ $color-pink: #dda6a0;
   }
 }
 
+
+
+.overlay-loader {
+  display: none;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  -webkit-animation-name: rotateAnim;
+  animation-name: rotateAnim;
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+.loader div {
+  width: 4px;
+  height: 4px;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  border: 0px solid #fff;
+  position: absolute;
+  top: 1px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.loader div:nth-child(odd) {
+  border-top: none;
+  border-left: none;
+}
+.loader div:nth-child(even) {
+  border-bottom: none;
+  border-right: none;
+}
+.loader div:nth-child(2) {
+  border-width: 1px;
+  left: 0px;
+  top: -2px;
+  width: 6px;
+  height: 6px;
+}
+.loader div:nth-child(3) {
+  border-width: 1px;
+  left: -0px;
+  top: 1px;
+  width: 9px;
+  height: 9px;
+}
+.loader div:nth-child(4) {
+  border-width: 1px;
+  left: -0px;
+  top: -2px;
+  width: 12px;
+  height: 12px;
+}
+.loader div:nth-child(5) {
+  border-width: 1px;
+  left: -0px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+}
+.loader div:nth-child(6) {
+  border-width: 2px;
+  left: 0px;
+  top: -2px;
+  width: 20px;
+  height: 20px;
+}
+.loader div:nth-child(7) {
+  border-width: 2px;
+  left: 0px;
+  top: 3px;
+  width: 25px;
+  height: 25px;
+}
+
+.btn-loader  {
+  position: relative;
+  color: transparent;
+  -webkit-transition: color 0s;
+  -o-transition: color 0s;
+  transition: color 0s;
+}
+.btn-loader .overlay-loader {
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+
+@-webkit-keyframes rotateAnim {
+  from {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+}
+
+
+@keyframes rotateAnim {
+  from {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+}

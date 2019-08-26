@@ -22,6 +22,7 @@
     "gulp-sass": "^4.0.2",
     "gulp-uglifyes": "^0.2.1",
     "gulp-watch": "^5.0.1",
+    "howler": "^2.1.2",
     "imagemin-pngquant": "^8.0.0",
     "jquery": "^3.4.1",
     "jquery-form-validator": "^2.3.79",

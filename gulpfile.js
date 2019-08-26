@@ -32,6 +32,7 @@ var path = {
         js: 'build/js/',
         css: 'build/css/',
         img: 'build/img/',
+        audio: 'build/audio/',
         fonts: 'build/fonts/'
     },
     src: { //Пути откуда брать исходники
@@ -49,6 +50,7 @@ var path = {
             //'node_modules/jquery.maskedinput/src/jquery.maskedinput.js',
             //'node_modules/jquery-form-validator/form-validator/jquery.form-validator.min.js',
             //'src/libs/fselect/fselect.min.js',
+            'node_modules/howler/dist/howler.core.min.js',
             'node_modules/pagepiling.js/jquery.pagepiling.min.js',
             'node_modules/jquery-mousewheel/jquery.mousewheel.js',
 
@@ -57,6 +59,7 @@ var path = {
         ],
         style: 'src/style/**/*.scss',
         img: 'src/img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
+        audio: 'src/audio/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
         fonts: 'src/fonts/**/*.*'
     },
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
@@ -119,11 +122,17 @@ gulp.task('fonts:build', function (done) {
         .pipe(gulp.dest(path.build.fonts))
     done();
 });
+gulp.task('audio:build', function (done) {
+    gulp.src(path.src.audio)
+        .pipe(gulp.dest(path.build.audio))
+    done();
+});
 gulp.task('build', gulp.series([
     'html:build',
     'js:build',
     'style:build',
     'fonts:build',
+    'audio:build',
     'image:build'
 ]));
 gulp.task('watch', function () {
