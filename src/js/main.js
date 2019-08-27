@@ -10,7 +10,7 @@ var wWidth = 0;
 
 
 $(document).ready(function () {
-    let sectionsId = [];
+    let sectionsId = []; //use in: pagepilingInit()
 
     $('.section').each(function () {
         var sec = $(this);
@@ -18,7 +18,7 @@ $(document).ready(function () {
         sectionsId.push(sec.attr('id'));
     });
 
-    let answersRun = false;
+    let answersRun = false; //use in: answers(),  pagepilingInit()
 
 
     let camGif = {
@@ -93,7 +93,7 @@ $(document).ready(function () {
         camGif.init();
     }
 
-    if ( $('.pagepiling').length ) {
+    function pagepilingInit() {
         $('.pagepiling').pagepiling({
             menu: null,
             direction: 'horizontal',
@@ -127,24 +127,31 @@ $(document).ready(function () {
                 pagepilingLoadStep(initAnchorLink);
             },
         });
+
+        function pagepilingLoadStep (anchorLink, index) {
+
+            if (anchorLink === 'answers') {
+                answersRun = true;
+                $.fn.pagepiling.setAllowScrolling(false);
+                $.fn.pagepiling.setKeyboardScrolling(false);
+            } else {
+                answersRun = false;
+            }
+
+            if (anchorLink === 'top') {
+                camGif.run();
+            } else {
+                camGif.stop();
+            }
+        }
+    };
+
+    if ( $('.pagepiling').length ) {
+        pagepilingInit();
     }
 
-    function pagepilingLoadStep (anchorLink, index) {
 
-        if (anchorLink === 'answers') {
-            answersRun = true;
-            $.fn.pagepiling.setAllowScrolling(false);
-            $.fn.pagepiling.setKeyboardScrolling(false);
-        } else {
-            answersRun = false;
-        }
 
-        if (anchorLink === 'top') {
-            camGif.run();
-        } else {
-            camGif.stop();
-        }
-    }
 
 
 
@@ -152,10 +159,12 @@ $(document).ready(function () {
 
     function answers () {
         let wrap = $('.s-answers'),
+            cards = wrap.find('.s-answers__cards'),
             touchY,
             dir,
             scrolling = false,
-            stage = 1;
+            stage = 1,
+            cardsStage = 1;
 
         wrap.on('touchstart', function (e){
             touchY = e.originalEvent.touches[0].clientY;
@@ -172,7 +181,13 @@ $(document).ready(function () {
 
 
         wrap.on("mousewheel DOMMouseScroll", function (e) {
-            slideAnimate(e.deltaY)
+            var obj = $(e.target);
+
+            if (!obj.closest('.s-answers__cards').length) {
+                slideAnimate(e.deltaY);
+            } else  {
+                cardsAnimate(e.deltaY);
+            }
         });
 
 
@@ -188,6 +203,8 @@ $(document).ready(function () {
 
         function slideAnimate(dir) {
             if ( scrolling || (dir === 0) ) { return };
+
+            $('html, body').stop();
 
             scrolling = true;
 
@@ -207,10 +224,151 @@ $(document).ready(function () {
                 wrap.attr('data-stage', stage);
             }
 
+            cardsStage = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
+
+            setTriggerPopupBtnIndex(stage, cardsStage);
+
             setTimeout(function () {
                 scrolling = false;
-            }, 500)
+            }, 500);
         };
+
+
+        function cardsAnimate(dir) {
+            if ( scrolling || (dir === 0) ) { return };
+
+            $('html, body').stop();
+
+            scrolling = true;
+
+            let cardsEl = $('.s-answers__people-item--' + stage).find('.s-answers__cards'),
+                cardsMax = cardsEl.find('.s-answers__card').length
+            ;
+
+            cardsStage = cardsEl.attr('data-stage');
+
+            (dir === -1) ? ++cardsStage : --cardsStage;
+
+            if ( cardsStage < 1 ) {
+                cardsStage = cardsMax;
+            } else if ( cardsStage > cardsMax ) {
+                cardsStage = 1;
+            }
+
+            cardsEl.attr('data-stage', cardsStage);
+
+            setTriggerPopupBtnIndex(stage, cardsStage);
+
+            setTimeout(function () {
+                scrolling = false;
+            }, 300);
+        };
+
+
+
+        function setTriggerPopupBtnIndex (stage, cardsStage) {
+            // let cadrsCurrentIndex = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
+
+            $('.js-answers-popup-trigger-btn').attr('data-index', stage + '_' + cardsStage);
+        };
+
+
+        function personPopup() {
+            let sound,
+                soundSrc = [];
+
+            $(document).on('click touch', '.s-answers__card, .js-answers-popup-trigger-btn', function (e) {
+                e.preventDefault();
+
+                let sound,
+                    popupTrigger = $(this),
+                    index = popupTrigger.attr('data-index'),
+                    popupTriggerHtml = popupTrigger.html(),
+                    imgSrc = 'img/answers/' + index + '.jpg'
+                ;
+
+                soundSrc = [
+                    'audio/answers/ogg/' + index + '.ogg',
+                    'audio/answers/m4a/' + index + '.m4a'
+                ];
+
+                $('.js-popup-person-img').attr('src', imgSrc);
+
+
+                popupTrigger.append(LOADER_HTML).addClass('btn-loader').attr('disabled', 'disabled');
+
+
+                setTimeout(function() {
+                    openModal();
+                    popupTrigger.html(popupTriggerHtml).removeClass('btn-loader').removeAttr('disabled');
+                }, 100);
+
+            });
+
+
+            $(document).on('click touch', '.s-answers__card', function (e) {
+                let index = $(this).attr('data-index');
+
+                setTriggerPopupBtnIndex(index);
+            });
+
+            $(document).on('click touch', '.js-person-audio-play-trigger', function (e) {
+                playPersonAudio(soundSrc);
+            });
+
+            function openModal() {
+                $.fancybox.open({
+                    src  : '#popup-person',
+                    type : 'inline',
+                    opts : {
+                        afterShow : function( instance, current ) {
+                            playPersonAudio(soundSrc);
+                        },
+                        beforeClose : function( instance, current ) {
+                            stopPersonAudio($('.js-popup-person-audio-player'));
+                        },
+                        hash: false,
+                        baseTpl:
+                            '<div class="fancybox-container popup-person-wrap" role="dialog" tabindex="-1">' +
+                            '<div class="fancybox-bg"></div>' +
+                            '<div class="fancybox-inner">' +
+                            '<div class="fancybox-infobar"><span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span></div>' +
+                            '<div class="fancybox-toolbar">{{buttons}}</div>' +
+                            '<div class="fancybox-navigation">{{arrows}}</div>' +
+                            '<div class="fancybox-stage"></div>' +
+                            '<div class="fancybox-caption"></div>' +
+                            "</div>" +
+                            "</div>",
+                        buttons: [],
+                        animationEffect: "zoom-in-out",
+                    },
+
+                });
+            };
+
+            function playPersonAudio(srcArr) {
+
+                sound = new Howl({
+                    src: srcArr
+                });
+
+                sound.play();
+
+                sound.on('play', function(){
+                    $('.popup-person').addClass('popup-person--playing');
+                }).on('end', function(){
+                    $('.popup-person').removeClass('popup-person--playing');
+                });
+
+            };
+
+            function stopPersonAudio() {
+                sound.stop();
+            };
+
+        };
+
+        personPopup();
 
 
     };
@@ -221,118 +379,5 @@ $(document).ready(function () {
 
 
 
-    function personPopup() {
-        let sound,
-            soundSrc = '';
-
-        $(document).on('click touch', '.s-answers__card', function (e) {
-            e.preventDefault();
-
-            let sound,
-                popupTrigger = $(this),
-                index = popupTrigger.data('index'),
-                popupTriggerHtml = popupTrigger.html(),
-                imgSrc = 'img/answers/' + index + '.jpg'
-            ;
-
-            soundSrc = 'audio/answers/' + index + '.wav';
-
-
-            // $('.js-popup-person-audio-player').attr('src', 'audio/answers/' + index + '.wav');
-            $('.js-popup-person-img').attr('src', imgSrc);
-
-
-            popupTrigger.append(LOADER_HTML).addClass('btn-loader').attr('disabled', 'disabled');
-
-
-            setTimeout(function() {
-                openModal();
-                popupTrigger.html(popupTriggerHtml).removeClass('btn-loader').removeAttr('disabled');
-            }, 100);
-
-        });
-
-
-        $(document).on('click touch', '.js-person-audio-play-trigger', function (e) {
-            playPersonAudio(soundSrc);
-        });
-
-        function openModal() {
-            $.fancybox.open({
-                src  : '#popup-person',
-                type : 'inline',
-                opts : {
-                    afterShow : function( instance, current ) {
-                        // playPersonAudio($('.js-popup-person-audio-player'));
-                        playPersonAudio(soundSrc);
-                    },
-                    beforeClose : function( instance, current ) {
-                        stopPersonAudio($('.js-popup-person-audio-player'));
-                    },
-                    hash: false,
-                    baseTpl:
-                        '<div class="fancybox-container popup-person-wrap" role="dialog" tabindex="-1">' +
-                        '<div class="fancybox-bg"></div>' +
-                        '<div class="fancybox-inner">' +
-                        '<div class="fancybox-infobar"><span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span></div>' +
-                        '<div class="fancybox-toolbar">{{buttons}}</div>' +
-                        '<div class="fancybox-navigation">{{arrows}}</div>' +
-                        '<div class="fancybox-stage"></div>' +
-                        '<div class="fancybox-caption"></div>' +
-                        "</div>" +
-                        "</div>",
-                    buttons: [],
-                    animationEffect: "zoom-in-out",
-                },
-
-            });
-        };
-
-        function playPersonAudio(src) {
-
-            sound = new Howl({
-                src: [src]
-            });
-
-            sound.play();
-
-            sound.on('play', function(){
-                $('.popup-person').addClass('popup-person--playing');
-            }).on('end', function(){
-                $('.popup-person').removeClass('popup-person--playing');
-            });
-
-            // let audio = el[0];
-            //
-            // if (audio.paused !== false) {
-            //     audio.currentTime = 0;
-            //     audio.play();
-            // };
-            //
-            // audio.onplaying = function () {
-            //     $('.popup-person').addClass('popup-person--playing');
-            // };
-            //
-            // audio.onpause = function () {
-            //     $('.popup-person').removeClass('popup-person--playing');
-            // };
-        };
-
-        function stopPersonAudio(el) {
-            // let audio = el[0];
-            //
-            // if (audio.paused == false) {
-            //     audio.pause();
-            // }
-
-            sound.stop();
-        };
-
-    };
-
-    personPopup();
-
-
-
-
 });
+
