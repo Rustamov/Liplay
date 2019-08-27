@@ -106,8 +106,8 @@ $(document).ready(function () {
             loopTop: false,
             css3: true,
             normalScrollElements: null,
-            normalScrollElementTouchThreshold: 5,
-            touchSensitivity: 5,
+            normalScrollElementTouchThreshold: 1,
+            touchSensitivity: 1,
             keyboardScrolling: true,
             sectionSelector: '.section',
             animateAnchor: true,
@@ -119,6 +119,9 @@ $(document).ready(function () {
 
             afterLoad: function (anchorLink, index) {
                 pagepilingLoadStep(anchorLink, index);
+                $(window).stop().clearQueue();
+                $(document).stop().clearQueue();
+                $('html', 'body').stop().clearQueue();
             },
 
             afterRender: function () {
@@ -177,17 +180,27 @@ $(document).ready(function () {
                 (touchY < newTouchY - 5) ? 1 : 0;
 
             slideAnimate(dir);
+
+            console.log('touchend  -  .s-answers')
         });
 
 
-        wrap.on("mousewheel DOMMouseScroll", function (e) {
-            var obj = $(e.target);
+        wrap.on("mousewheel", function (e) {
+            if ( scrolling ) { return };
+
+            let obj = $(e.target);
 
             if (!obj.closest('.s-answers__cards').length) {
                 slideAnimate(e.deltaY);
+                console.log('mousewheel  -  .s-answers')
             } else  {
                 cardsAnimate(e.deltaY);
+                console.log('mousewheel  -  .s-answers__cards')
             }
+
+            console.log(e.deltaX, e.deltaY, e.deltaFactor);
+
+
         });
 
 
@@ -204,7 +217,6 @@ $(document).ready(function () {
         function slideAnimate(dir) {
             if ( scrolling || (dir === 0) ) { return };
 
-            $('html, body').stop();
 
             scrolling = true;
 
@@ -228,6 +240,10 @@ $(document).ready(function () {
 
             setTriggerPopupBtnIndex(stage, cardsStage);
 
+            $(window).stop().clearQueue();
+            $(document).stop().clearQueue();
+            $('html', 'body').stop().clearQueue();
+
             setTimeout(function () {
                 scrolling = false;
             }, 500);
@@ -237,7 +253,6 @@ $(document).ready(function () {
         function cardsAnimate(dir) {
             if ( scrolling || (dir === 0) ) { return };
 
-            $('html, body').stop();
 
             scrolling = true;
 
@@ -255,9 +270,9 @@ $(document).ready(function () {
                 cardsStage = 1;
             }
 
-            cardsEl.attr('data-stage', cardsStage);
 
-            setTriggerPopupBtnIndex(stage, cardsStage);
+            setCardsStage(cardsEl, stage, cardsStage);
+
 
             setTimeout(function () {
                 scrolling = false;
@@ -265,6 +280,17 @@ $(document).ready(function () {
         };
 
 
+
+        function setCardsStage (element, stage, cardsStage) {
+            element.attr('data-stage', cardsStage);
+
+            setTriggerPopupBtnIndex(stage, cardsStage);
+
+            $('.s-answers__card').removeClass('hover');
+
+            $('.s-answers__people-item--' + stage + ' .s-answers__card--' + cardsStage).addClass('hover')
+
+        };
 
         function setTriggerPopupBtnIndex (stage, cardsStage) {
             // let cadrsCurrentIndex = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
@@ -295,6 +321,8 @@ $(document).ready(function () {
                 $('.js-popup-person-img').attr('src', imgSrc);
 
 
+
+
                 popupTrigger.append(LOADER_HTML).addClass('btn-loader').attr('disabled', 'disabled');
 
 
@@ -307,7 +335,14 @@ $(document).ready(function () {
 
 
             $(document).on('click touch', '.s-answers__card', function (e) {
-                let index = $(this).attr('data-index');
+                let index = $(this).attr('data-index'),
+                    elIndex = $(this).index() + 1;
+
+
+                let cardsEl = $('.s-answers__people-item--' + stage).find('.s-answers__cards');
+                cardsStage = elIndex;
+
+                cardsEl.attr('data-stage', cardsStage);
 
                 setTriggerPopupBtnIndex(index);
             });
@@ -316,6 +351,19 @@ $(document).ready(function () {
                 playPersonAudio(soundSrc);
             });
 
+            $('.s-answers__card').hover(
+                function() {
+                    let $this = $(this);
+
+                    $this.addClass('hover');
+                },
+                function() {
+                    let $this = $(this);
+
+                    $this.removeClass('hover');
+                }
+            );
+
             function openModal() {
                 $.fancybox.open({
                     src  : '#popup-person',
@@ -323,9 +371,11 @@ $(document).ready(function () {
                     opts : {
                         afterShow : function( instance, current ) {
                             playPersonAudio(soundSrc);
+                            $('.popup-person-wrap .popup-person__inner').addClass('popup-person__inner--shadow');
                         },
                         beforeClose : function( instance, current ) {
                             stopPersonAudio($('.js-popup-person-audio-player'));
+                            $('.popup-person-wrap .popup-person__inner').removeClass('popup-person__inner--shadow');
                         },
                         hash: false,
                         baseTpl:
@@ -340,7 +390,7 @@ $(document).ready(function () {
                             "</div>" +
                             "</div>",
                         buttons: [],
-                        animationEffect: "zoom-in-out",
+                        animationEffect: "circular",
                     },
 
                 });

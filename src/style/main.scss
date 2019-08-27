@@ -579,6 +579,7 @@ frame {
 
   &__card {
     position: absolute;
+    display: inline-block;
     width: px-to-rem(264);
     height: px-to-rem(410);
     padding: px-to-rem(35) px-to-rem(20) px-to-rem(75);
@@ -588,54 +589,74 @@ frame {
     top: 0;
     margin: px-to-rem(-50) 0 0 px-to-rem(-132);
     cursor: pointer;
-    transition: transform 0.5s, opacity 0.3s;
+    transition: transform 0.5s, opacity 0.3s, top 0.7s;
 
-    .s-answers__cards[data-stage="1"] &--1 {
+
+    @mixin answersCardState-1 {
       z-index: 1;
       transform: translate(0, 0) scale(1);
+
+      &.hover {
+        z-index: 2;
+        opacity: 1;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, .25);
+      }
     }
-    .s-answers__cards[data-stage="1"] &--2 {
+
+    @mixin answersCardState-2 {
       z-index: 0;
       transform: translate(px-to-rem(150), px-to-rem(0)) scale(0.65);
       opacity: 0.7;
+
+      &.hover {
+        z-index: 2;
+        opacity: 1;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, .25);
+      }
     }
-    .s-answers__cards[data-stage="1"] &--3 {
+
+    @mixin answersCardState-3 {
       z-index: 0;
       transform: translate(px-to-rem(-150), px-to-rem(0)) scale(0.65);
       opacity: 0.7;
+
+      &.hover {
+        z-index: 2;
+        opacity: 1;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, .25);
+      }
+    }
+
+    .s-answers__cards[data-stage="1"] &--1 {
+      @include answersCardState-1;
+    }
+    .s-answers__cards[data-stage="1"] &--2 {
+      @include answersCardState-2;
+    }
+    .s-answers__cards[data-stage="1"] &--3 {
+      @include answersCardState-3;
     }
 
 
     .s-answers__cards[data-stage="2"] &--1 {
-      z-index: 0;
-      transform: translate(px-to-rem(-150), px-to-rem(0)) scale(0.65);
-      opacity: 0.7;
-
+      @include answersCardState-3;
     }
     .s-answers__cards[data-stage="2"] &--2 {
-      z-index: 1;
-      transform: translate(0, 0) scale(1);
+      @include answersCardState-1;
     }
     .s-answers__cards[data-stage="2"] &--3 {
-      z-index: 0;
-      transform: translate(px-to-rem(150), px-to-rem(0)) scale(0.65);
-      opacity: 0.7;
+      @include answersCardState-2;
     }
 
 
     .s-answers__cards[data-stage="3"] &--1 {
-      z-index: 0;
-      transform: translate(px-to-rem(150), px-to-rem(0)) scale(0.65);
-      opacity: 0.7;
+      @include answersCardState-2;
     }
     .s-answers__cards[data-stage="3"] &--2 {
-      z-index: 0;
-      transform: translate(px-to-rem(-150), px-to-rem(0)) scale(0.65);
-      opacity: 0.7;
+      @include answersCardState-3;
     }
     .s-answers__cards[data-stage="3"] &--3 {
-      z-index: 1;
-      transform: translate(0, 0) scale(1);
+      @include answersCardState-1;
     }
 
 
@@ -651,7 +672,7 @@ frame {
       vertical-align: middle;
       transition: transform 0.1s 0.1s;
 
-      .s-answers__card:hover & {
+      .s-answers__card.hover & {
         transform: scale(1.03);
       }
     }
@@ -676,7 +697,7 @@ frame {
       transition: transform 0.2s, opacity 0.2s;
       pointer-events: none;
 
-      .s-answers__card:hover & {
+      .s-answers__card.hover & {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
       }
@@ -917,7 +938,10 @@ frame {
     overflow-x: hidden;
     overflow-y: auto;
     background: $color-pink;
-    box-shadow: 0px 3px 24.92px 3.08px rgba(0, 0, 0, 0.3);
+
+    &--shadow {
+      box-shadow: 0px 3px 24.92px 3.08px rgba(0, 0, 0, 0.3);
+    }
   }
 
   &__close {
@@ -1046,11 +1070,45 @@ frame {
     }
   }
 
-  &__device {
+  &__qr {
+    display: inline-block;
+    vertical-align: middle;
+    width: px-to-rem(77);
+
     &-img {
-      width: 100px;
+      display: inline-block;
+      vertical-align: middle;
+      width: 100%;
+      height: auto;
     }
   }
+
+  &__device {
+    display: inline-block;
+    vertical-align: middle;
+    width: px-to-rem(122);
+
+    &-img {
+      display: inline-block;
+      vertical-align: middle;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__logo {
+    display: inline-block;
+    vertical-align: middle;
+    width: px-to-rem(100);
+
+    &-img {
+
+      width: 100%;
+      height: auto;
+    }
+  }
+
+
 
 
 
@@ -1064,8 +1122,14 @@ frame {
 
     &__device {
       &-img {
-        width: 122px;
+        width: px-to-rem(122);
       }
+    }
+
+    &__logo {
+      display: inline-block;
+      vertical-align: middle;
+      width: 80px;
     }
   }
 
