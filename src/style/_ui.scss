@@ -21,6 +21,70 @@ $color-pink: #dda6a0;
   @return ($px/$rem) + rem
 }
 
+
+.hide-xs {
+  @include media-breakpoint-down(xs) {
+    display: none;
+  }
+}
+.hide-sm {
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
+}
+.hide-md {
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
+}
+.hide-lg {
+  @include media-breakpoint-down(lg) {
+    display: none;
+  }
+}
+.hide-xl {
+  @include media-breakpoint-down(xl) {
+    display: none;
+  }
+}
+
+.visible-xs {
+  display: none;
+
+  @include media-breakpoint-down(xs) {
+    display: block;
+  }
+}
+.visible-sm {
+  display: none;
+
+  @include media-breakpoint-down(sm) {
+    display: block;
+  }
+}
+.visible-md {
+  display: none;
+
+  @include media-breakpoint-down(md) {
+    display: block;
+  }
+}
+.visible-lg {
+  display: none;
+
+  @include media-breakpoint-down(lg) {
+    display: block;
+  }
+}
+.visible-xl {
+  display: none;
+
+  @include media-breakpoint-down(xl) {
+    display: block;
+  }
+}
+
+
 .text {
   line-height: 1.125;
   font-size: px-to-rem(20);
@@ -127,6 +191,11 @@ $color-pink: #dda6a0;
   blockquote p {
     display: inline;
   }
+
+  @include media-breakpoint-down(sm) {
+    font-size: 11px;
+    line-height: 1.25;
+  }
 }
 
 
@@ -141,6 +210,10 @@ $color-pink: #dda6a0;
   width: px-to-rem(104);
   height: px-to-rem(104);
   filter: drop-shadow( 2px 2px 3px rgba(0, 0, 0, 0.25));
+
+  @include media-breakpoint-down(sm) {
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.35));
+  }
 }
 
 .icon-heart {
@@ -148,18 +221,30 @@ $color-pink: #dda6a0;
   width: px-to-rem(104);
   height: px-to-rem(104);
   filter: drop-shadow( 2px 2px 3px rgba(0, 0, 0, 0.25));
+
+  @include media-breakpoint-down(sm) {
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.35));
+  }
 }
 
 .icon-circle {
   width: px-to-rem(315);
   height: px-to-rem(315);
   filter: drop-shadow( 2px 2px 3px rgba(0, 0, 0, 0.25));
+
+  @include media-breakpoint-down(sm) {
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.35));
+  }
 }
 
 .icon-close {
   width: px-to-rem(32);
   height: px-to-rem(32);
   filter: drop-shadow( 2px 2px 3px rgba(0, 0, 0, 0.25));
+
+  @include media-breakpoint-down(sm) {
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.35));
+  }
 }
 
 .icon-music {
@@ -183,8 +268,9 @@ $color-pink: #dda6a0;
   color: #000000;
   border: 2px solid transparent;
   border-radius: px-to-rem(36);
-  background: transparent;
+  background: $color-pink;
   transition: background-color 0.2s;
+
   &:hover {
     text-decoration: none;
     color: #000000;
@@ -221,6 +307,27 @@ $color-pink: #dda6a0;
     font-style: normal;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35);
 
+  }
+
+
+  @include media-breakpoint-down(sm) {
+    border-radius: 18px;
+
+    &::before {
+      border-radius: 16px;
+      filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.35));
+    }
+
+    &__text {
+      padding: 14px 28px 13px 16px;
+      font-size: 13px;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
+    }
+
+    &__icon .icon {
+      width: 44px;
+      height: 44px;
+    }
   }
 }
 
@@ -275,6 +382,26 @@ $color-pink: #dda6a0;
     font-style: normal;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35);
 
+  }
+
+  @include media-breakpoint-down(sm) {
+    border-radius: 18px;
+
+    &::before {
+      border-radius: 16px;
+      box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.35) inset;
+    }
+
+    &__text {
+      padding: 7px 24px 7px 10px;
+      font-size: 13px;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
+    }
+
+    &__icon .icon {
+      width: 44px;
+      height: 44px;
+    }
   }
 }
 
@@ -410,6 +537,8 @@ $color-pink: #dda6a0;
     transform: rotate(0deg);
   }
 }
+
+
 
 
 

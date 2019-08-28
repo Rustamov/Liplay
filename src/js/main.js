@@ -119,9 +119,8 @@ $(document).ready(function () {
 
             afterLoad: function (anchorLink, index) {
                 pagepilingLoadStep(anchorLink, index);
-                $(window).stop().clearQueue();
-                $(document).stop().clearQueue();
-                $('html', 'body').stop().clearQueue();
+
+                clearMouseWheel();
             },
 
             afterRender: function () {
@@ -134,7 +133,9 @@ $(document).ready(function () {
         function pagepilingLoadStep (anchorLink, index) {
 
             if (anchorLink === 'answers') {
-                answersRun = true;
+                setTimeout(function () {
+                    answersRun = true;
+                }, 500);
                 $.fn.pagepiling.setAllowScrolling(false);
                 $.fn.pagepiling.setKeyboardScrolling(false);
             } else {
@@ -240,9 +241,7 @@ $(document).ready(function () {
 
             setTriggerPopupBtnIndex(stage, cardsStage);
 
-            $(window).stop().clearQueue();
-            $(document).stop().clearQueue();
-            $('html', 'body').stop().clearQueue();
+            clearMouseWheel();
 
             setTimeout(function () {
                 scrolling = false;
@@ -273,6 +272,9 @@ $(document).ready(function () {
 
             setCardsStage(cardsEl, stage, cardsStage);
 
+
+
+            clearMouseWheel();
 
             setTimeout(function () {
                 scrolling = false;
@@ -376,6 +378,7 @@ $(document).ready(function () {
                         beforeClose : function( instance, current ) {
                             stopPersonAudio($('.js-popup-person-audio-player'));
                             $('.popup-person-wrap .popup-person__inner').removeClass('popup-person__inner--shadow');
+                            $('.s-answers__card').removeClass('hover');
                         },
                         hash: false,
                         baseTpl:
@@ -428,6 +431,12 @@ $(document).ready(function () {
     };
 
 
+
+    function clearMouseWheel() {
+        $(window).stop().clearQueue();
+        $(document).stop().clearQueue();
+        $('html', 'body').stop().clearQueue();
+    };
 
 });
 

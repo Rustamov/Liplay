@@ -3,12 +3,17 @@
 <div class="pagepiling">
     <div class="section" id="top">
         <section class="s-top">
-             <div class="s-top__inner section-anim-inner">
+
+
+
+            <div class="s-top__inner section-anim-inner">
                  <div class="s-top__inner-cnt">
                      <div class="container">
                         <div class="s-top__block">
                             <div class="s-top__block-logo">
-                                <img class="s-top__logo" src="img/svg/logo.svg" alt="LiPlayMyVoice logo" width="1630" height="376">
+                                <div class="s-top__logo">
+                                    <img class="s-top__logo-img" src="img/svg/logo.svg" alt="LiPlayMyVoice logo" width="1630" height="376">
+                                </div>
                             </div>
 
                             <div class="s-top__block-cam">
@@ -35,26 +40,28 @@
 
                      </div>
                  </div>
-             </div>
 
-             <div class="go-to">
-                 <div class="go-to__inner">
-                     <div class="go-to__text">
-                         <img class="go-to__text-img" src="img/svg/go-to-text.svg" alt="Перейти в магазин" width="390" height="86">
-                     </div>
-                     <span class="go-to__line">&nbsp;</span>
-                     <div class="go-to__btn">
-                         <a class="btn-play" href="#">
+                <div class="go-to">
+                    <div class="go-to__inner">
+                        <div class="go-to__text">
+                            <img class="go-to__text-img" src="img/svg/go-to-text.svg" alt="Перейти в магазин" width="390" height="86">
+                        </div>
+                        <span class="go-to__line">&nbsp;</span>
+
+                        <div class="go-to__btn">
+                            <a class="btn-play" href="#">
                              <span class="btn-play__icon">
                                  <svg class="icon icon-microphone" width="104" height="104">
                                     <use xlink:href="#icon-microphone"></use>
                                 </svg>
                              </span>
-                             <span class="btn-play__text">LiPlay me</span>
-                         </a>
-                     </div>
-                 </div>
+                                <span class="btn-play__text">LiPlay me</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
              </div>
+
 
              <div class="logo-block">
                  <img class="logo-block__img" src="img/svg/logo-mini.svg" alt="Instax mini liplay logo" width="220" height="121">
@@ -71,10 +78,11 @@
                         <div class="s-cameras__block">
                             <div class="s-cameras__block-img-wrap">
                                 <picture class="s-cameras__block-img">
-                                    <source srcset="img/sec-cameras-img.png 1x, img/sec-cameras-img.png 2x" media="(min-width: 992px)">
-                                    <img src="img/sec-cameras-img.png" srcset="img/sec-cameras-img.png 1x, img/sec-cameras-img.png 2x" alt="Polaroid instax mini liplay cameras">
+                                    <source srcset="img/sec-cameras-img.png 1x, img/sec-cameras-img.png 2x" media="(min-width: 768px)">
+                                    <img src="img/sec-cameras-img-sm.png" srcset="img/sec-cameras-img-sm.png 1x, img/sec-cameras-img-sm.png 2x" alt="Polaroid instax mini liplay cameras">
                                 </picture>
                             </div>
+
                             <div class="s-cameras__block-text text">
                                 <p>LiPlay ― первая фотокамера Instax с функцией записи и печати звуковых посланий. <b>У
                                     фотокарточек появился голос!</b></p>
@@ -86,9 +94,10 @@
             </div>
 
             <span class="s-cameras__line-left">&nbsp;</span>
+            <span class="s-cameras__line-left-bottom">&nbsp;</span>
             <span class="s-cameras__line-right">&nbsp;</span>
 
-            <div class="go-to go-to--bottom">
+            <div class="go-to go-to--bottom go-to--s-cameras">
                 <div class="go-to__inner">
                     <div class="go-to__btn">
                         <a class="btn-play" href="#">
@@ -103,7 +112,7 @@
                 </div>
             </div>
 
-            <div class="logo-block">
+            <div class="logo-block logo-block--s-cameras">
                 <img class="logo-block__img" src="img/svg/logo-mini.svg" alt="Instax mini liplay logo" width="220" height="121">
             </div>
         </section>
@@ -121,20 +130,21 @@
                                 </div>
 
                                 <div class="s-answers__top-text text">
-                                    <p>Мы задали 6 вопросов нашей аудитории, чтобы услышать представление молодых людей о самих себе, своем месте в настоящем и будущем, об образе будущего в целом и записали ответы на карточки Instax.
-                                        <b>Мы опросили 180 человек и получили следующие результаты:</b></p>
+                                    <p class="hide-sm">Мы задали 6 вопросов нашей аудитории, чтобы услышать представление молодых людей о самих себе, своем месте в настоящем и будущем, об образе будущего в целом и записали ответы на карточки Instax.<b>Мы опросили 180 человек и получили следующие результаты:</b></p>
+                                    <p class="visible-sm"><b>Мы задали 6 вопросов нашей аудитории,</b> чтобы услышать представление молодых людей о самих себе, своем месте в настоящем и будущем. Используя камеру LiPlay записали аудио ответы на карточки INSTAX</p>
                                 </div>
                             </div>
 
                             <div class="s-answers__block-main">
-                                <div class="row">
-                                    <div class="col-lg-4">
+                                <div class="row flex-column flex-lg-row">
+                                    <div class="col-lg-4 order-2 order-lg-1">
                                         <div class="s-answers__text-items">
                                             <div class="s-answers__text-item s-answers__text-item--1">
                                                 <div class="s-answers__text-box">
                                                     <div class="s-answers__text-box-title">О себе и своих стремлениях</div>
                                                     <div class="s-answers__text-box-main text">
-                                                        <p>Креативность. К чему стремится наша аудитория профессионально? В связи со спецификой возраста, перед ними сейчас стоит выбор дальнейшего пути. Многие участники мероприятия говорили о том, что реализоваться в творческой профессии: например, стать актрисой, телеведущей, фотографом.</p>
+                                                        <p class="hide-sm">Креативность. К чему стремится наша аудитория профессионально? В связи со спецификой возраста, перед ними сейчас стоит выбор дальнейшего пути. Многие участники мероприятия говорили о том, что реализоваться в творческой профессии: например, стать актрисой, телеведущей, фотографом.</p>
+                                                        <p class="visible-sm">Перед многими людьми в возрасте от 14 до 21 года стоит выбор дальнейшего пути. К чему они стремятся?</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,7 +153,8 @@
                                                 <div class="s-answers__text-box">
                                                     <div class="s-answers__text-box-title">Об идеалах</div>
                                                     <div class="s-answers__text-box-main text">
-                                                        <p>Эмпатия и открытость. Когда мы задавали вопросы об «идеальном себе», мы поняли, что на самом деле новое поколение совсем не эгоистичное, как его считают. Эмпатия, высокие этические идеалы и открытость миру ― ответы нового поколения.</p>
+                                                        <p class="hide-sm">Эмпатия и открытость. Когда мы задавали вопросы об «идеальном себе», мы поняли, что на самом деле новое поколение совсем не эгоистичное, как его считают. Эмпатия, высокие этические идеалы и открытость миру ― ответы нового поколения.</p>
+                                                        <p class="visible-sm">Не правильно считать новое поколение эгоистичным. Эмпатия, высокие этические идеалы и открытость миру — вот ответы нового поколения. </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -152,7 +163,8 @@
                                                 <div class="s-answers__text-box">
                                                     <div class="s-answers__text-box-title">О способностях и ответственности</div>
                                                     <div class="s-answers__text-box-main text">
-                                                        <p>Локальность, глобальность и индивидуальный вклад. Мы хотели узнать о способностях и степени ответственности, которую они на себе чувствуют. Ответы охватывают широкий спектр проблем от локального уровня (семья, близкие) до глобального (целая Земля, экология). Говорили о важности личного вклада каждого.</p>
+                                                        <p class="hide-sm">Локальность, глобальность и индивидуальный вклад. Мы хотели узнать о способностях и степени ответственности, которую они на себе чувствуют. Ответы охватывают широкий спектр проблем от локального уровня (семья, близкие) до глобального (целая Земля, экология). Говорили о важности личного вклада каждого.</p>
+                                                        <p class="visible-sm">Что может один человек? Какую ответственность чувствует на себе молодежь? Ответы нас вдохновляют. </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -161,7 +173,8 @@
                                                 <div class="s-answers__text-box">
                                                     <div class="s-answers__text-box-title">О целях и готовности<br> их добиваться</div>
                                                     <div class="s-answers__text-box-main text">
-                                                        <p>Амбиции. Мы увидели, что наша аудитория хочет выходить за рамки того, что представляет общество. Многие говорили, что хотят быть необычными людьми. И снова ― все ставят перед собой большие цели, хотят добиться высот и даже успеха в своих областях.</p>
+                                                        <p class="hide-sm">Амбиции. Мы увидели, что наша аудитория хочет выходить за рамки того, что представляет общество. Многие говорили, что хотят быть необычными людьми. И снова ― все ставят перед собой большие цели, хотят добиться высот и даже успеха в своих областях.</p>
+                                                        <p class="visible-sm">Мы узнали, что наша аудитория бросает вызовы самим себе, готова выходить за рамки своей зоны комфорта.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,7 +183,8 @@
                                                 <div class="s-answers__text-box">
                                                     <div class="s-answers__text-box-title">О ценностях</div>
                                                     <div class="s-answers__text-box-main text">
-                                                        <p>Близкий круг и самореализация. По мнению участников нашего фото-исследования, самое главное в жизни ― семья, близкие люди и самореализация.</p>
+                                                        <p class="hide-sm">Близкий круг и самореализация. По мнению участников нашего фото-исследования, самое главное в жизни ― семья, близкие люди и самореализация.</p>
+                                                        <p class="visible-sm">На первом месте — близкие люди и самореализация. </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -187,7 +201,7 @@
 
                                     </div>
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-4 order-3 order-lg-2">
                                         <div class="s-answers__circle-wrap">
                                             <div class="s-answers__circle">
                                                 <div class="s-answers__circle-icon">
@@ -239,7 +253,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-4 order-1 order-lg-3">
                                         <div class="s-answers__people">
                                             <div class="s-answers__people-item  s-answers__people-item--1">
                                                 <div class="s-answers__cards" data-stage="1">
@@ -396,7 +410,7 @@
             <span class="s-answers__line-left">&nbsp;</span>
             <span class="s-answers__line-right">&nbsp;</span>
 
-            <div class="go-to go-to--bottom">
+            <div class="go-to go-to--bottom go-to--s-answers">
                 <div class="go-to__inner">
                     <div class="go-to__btn">
                         <a class="btn-play js-answers-popup-trigger-btn" href="#" data-index="1_1">
@@ -411,7 +425,7 @@
                 </div>
             </div>
 
-            <div class="logo-block">
+            <div class="logo-block logo-block--s-answers">
                 <img class="logo-block__img" src="img/svg/logo-mini.svg" alt="Instax mini liplay logo" width="220" height="121">
             </div>
         </section>
@@ -471,12 +485,12 @@
             <footer class="footer">
                 <div class="container">
                     <div class="row footer__row">
-                        <div class="col-lg-2">
+                        <div class="col-md-2">
                             <div class="footer__logo">
                                 <img class="footer__logo-img" src="img/svg/footer-logo.svg" alt="instax logo" width="220" height="74">
                             </div>
                         </div>
-                        <div class="col-lg-8 footer__col-copy">
+                        <div class="col-md-8 footer__col-copy">
                             <p class="footer__copy">© INSTAX FUJIFILM. Все права защищены.<br> Полное или частичное копирование материалов сайта без согласования с редакцией запрещено.</p>
                         </div>
                     </div>
