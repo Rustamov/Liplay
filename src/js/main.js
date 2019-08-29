@@ -1,3 +1,15 @@
+// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+let vh = window.innerHeight * 0.01;
+// Then we set the value in the --vh custom property to the root of the document
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+window.addEventListener('resize', () => {
+    // We execute the same script as before
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+
+
 var wWidth = 0;
     W_SM = 576
     W_MD = 768,
@@ -9,7 +21,18 @@ var wWidth = 0;
 
 
 
+
 $(document).ready(function () {
+    wWidth =  $(window).width();
+
+    $(window).on('resize', function() {
+        wWidth =  $(window).width();
+    });
+
+    if ( wWidth < W_MD ) {
+
+    }
+
     let sectionsId = []; //use in: pagepilingInit()
 
     $('.section').each(function () {
@@ -18,8 +41,9 @@ $(document).ready(function () {
         sectionsId.push(sec.attr('id'));
     });
 
-    let answersRun = false; //use in: answers(),  pagepilingInit()
 
+
+    let answersRun = false; //use in: answers(),  pagepilingInit()
 
     let camGif = {
         deviceStage: 0,
@@ -120,7 +144,7 @@ $(document).ready(function () {
             afterLoad: function (anchorLink, index) {
                 pagepilingLoadStep(anchorLink, index);
 
-                clearMouseWheel();
+                // clearMouseWheel();
             },
 
             afterRender: function () {
@@ -154,13 +178,6 @@ $(document).ready(function () {
         pagepilingInit();
     }
 
-
-
-
-
-
-
-
     function answers () {
         let wrap = $('.s-answers'),
             cards = wrap.find('.s-answers__cards'),
@@ -170,135 +187,347 @@ $(document).ready(function () {
             stage = 1,
             cardsStage = 1;
 
-        wrap.on('touchstart', function (e){
-            touchY = e.originalEvent.touches[0].clientY;
-        });
-
-        wrap.on('touchend', function (e) {
-            var newTouchY = e.originalEvent.changedTouches[0].clientY;
-
-            dir = (touchY > newTouchY + 5) ? -1 :
-                (touchY < newTouchY - 5) ? 1 : 0;
-
-            slideAnimate(dir);
-
-            console.log('touchend  -  .s-answers')
-        });
 
 
-        wrap.on("mousewheel", function (e) {
-            if ( scrolling ) { return };
 
-            let obj = $(e.target);
+        // wrap.on('touchstart', function (e){
+        //     touchY = e.originalEvent.touches[0].clientY;
+        // });
+        //
+        // wrap.on('touchend', function (e) {
+        //     let newTouchY = e.originalEvent.changedTouches[0].clientY;
+        //
+        //     dir = (touchY > newTouchY + 5) ? -1 :
+        //         (touchY < newTouchY - 5) ? 1 : 0;
+        //
+        //     slideAnimate(dir);
+        //
+        //     devMsg('touchend  -  .s-answers');
+        //     console.log('touchend  -  .s-answers', dir);
+        //
+        //     // console.log(dir);
+        // });
 
-            if (!obj.closest('.s-answers__cards').length) {
-                slideAnimate(e.deltaY);
-                console.log('mousewheel  -  .s-answers')
-            } else  {
-                cardsAnimate(e.deltaY);
-                console.log('mousewheel  -  .s-answers__cards')
+
+
+        //         wrap.on("mousewheel", function (e) {
+        //             if ( scrolling ) { return };
+        //
+        // ;
+        //
+        //
+        //             let obj = $(e.target);
+        //
+        //             if (!obj.closest('.s-answers__cards').length) {
+        //                 slideAnimate(e.deltaY);
+        //                 devMsg('mousewheel  -  .s-answers')
+        //             } else  {
+        //                 cardsAnimate(e.deltaY);
+        //                 devMsg('mousewheel  -  .s-answers__cards')
+        //             }
+        //
+        //             devMsg("mousewheel -" + e.deltaX  + '  ' + '  ' +  e.deltaY + '  ' + e.deltaFactor);
+        //
+        //
+        //         });
+
+        scrollScript();
+
+        personPopup();
+
+        function scrollScript() {
+            let container = wrap,
+                scrollingSpeed = 300,
+                scrollDelay = 300,
+                scrollings = [],
+                lastAnimation = 0,
+                prevTime = new Date().getTime();
+
+            addMouseWheelHandler();
+
+            function MouseWheelHandler(e) {
+                let curTime = new Date().getTime();
+
+                // cross-browser wheel delta
+                e = e || window.event;
+                let value = e.wheelDelta || -e.deltaY || -e.detail;
+                let delta = Math.max(-1, Math.min(1, value));
+
+                let obj = $(e.target);
+
+                let animFunction =  (!obj.closest('.s-answers__cards').length) ? slideAnimate : cardsAnimate;
+
+
+
+
+                let horizontalDetection = typeof e.wheelDeltaX !== 'undefined' || typeof e.deltaX !== 'undefined';
+                let isScrollingVertically = (Math.abs(e.wheelDeltaX) < Math.abs(e.wheelDelta)) || (Math.abs(e.deltaX ) < Math.abs(e.deltaY) || !horizontalDetection);
+
+                //Limiting the array to 150 (lets not waste memory!)
+                if(scrollings.length > 149){
+                    scrollings.shift();
+                }
+
+                //keeping record of the previous scrollings
+                scrollings.push(Math.abs(value));
+
+                //time difference between the last scroll and the current one
+                let timeDiff = curTime-prevTime;
+                prevTime = curTime;
+
+                //haven't they scrolled in a while?
+                //(enough to be consider a different scrolling action to scroll another section)
+                if(timeDiff > 200){
+                    //emptying the array, we dont care about old scrollings for our averages
+                    scrollings = [];
+                }
+
+                if ( !isMoving() ) {
+
+
+                    let averageEnd = getAverage(scrollings, 10);
+                    let averageMiddle = getAverage(scrollings, 70);
+                    let isAccelerating = averageEnd >= averageMiddle;
+
+                    if ( isAccelerating && isScrollingVertically ) {
+
+                        if ( delta < 0 || delta > 0 ) {
+                            //slideAnimate(delta);
+                            animFunction(delta);
+                        };
+                    }
+
+                    return false;
+                }
             }
 
-            console.log(e.deltaX, e.deltaY, e.deltaFactor);
+            function slideAnimate (dir) {
+                // if ( scrolling || (dir === 0) ) { return };
+
+                (dir === -1) ? ++stage : --stage;
+
+                if ( stage < 1 ) {
+                    stage = 1;
+                    $.fn.pagepiling.moveSectionUp();
+                    $.fn.pagepiling.setAllowScrolling(true);
+                    $.fn.pagepiling.setKeyboardScrolling(true);
+                } else if ( stage > 6 ) {
+                    stage = 6;
+                    $.fn.pagepiling.moveSectionDown();
+                    $.fn.pagepiling.setAllowScrolling(true);
+                    $.fn.pagepiling.setKeyboardScrolling(true);
+                } else {
+                    wrap.attr('data-stage', stage);
+                }
+
+                cardsStage = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
+
+                setTriggerPopupBtnIndex(stage, cardsStage);
+
+                var timeNow = new Date().getTime();
+                lastAnimation = timeNow;
 
 
-        });
+
+                // scrolling = true;
+                //
+                // setTimeout(function () {
+                //     scrolling = false;
+                // }, 1300);
+            };
+
+            function cardsAnimate(dir) {
+
+                let cardsEl = $('.s-answers__people-item--' + stage).find('.s-answers__cards'),
+                    cardsMax = cardsEl.find('.s-answers__card').length
+                ;
+
+                cardsStage = cardsEl.attr('data-stage');
+
+                (dir === -1) ? ++cardsStage : --cardsStage;
+
+                if ( cardsStage < 1 ) {
+                    cardsStage = cardsMax;
+                } else if ( cardsStage > cardsMax ) {
+                    cardsStage = 1;
+                }
 
 
-        $(window).on("keydown", function (a) {
-            let dir = ( 38 === a.keyCode || 37 === a.keyCode ) ? 1 : ( 40 === a.keyCode || 39 === a.keyCode ) && -1;
+                setCardsStage(cardsEl, stage, cardsStage);
 
-            if ( answersRun ) {
+                var timeNow = new Date().getTime();
+                lastAnimation = timeNow;
+            };
+
+            function getAverage(elements, number){
+                var sum = 0;
+
+                //taking `number` elements from the end to make the average, if there are not enought, 1
+                var lastElements = elements.slice(Math.max(elements.length - number, 1));
+
+                for(var i = 0; i < lastElements.length; i++){
+                    sum = sum + lastElements[i];
+                }
+
+                return Math.ceil(sum/number);
+            }
+
+            function isMoving(){
+                var timeNow = new Date().getTime();
+                // Cancel scroll if currently animating or within quiet period
+                if (timeNow - lastAnimation < scrollDelay + scrollingSpeed) {
+                    return true;
+                }
+                return false;
+            }
+
+
+
+
+            /**
+             * Adds the auto scrolling action for the mouse wheel and tackpad.
+             * After this function is called, the mousewheel and trackpad movements will scroll through sections
+             */
+            function addMouseWheelHandler(){
+                if (container.get(0).addEventListener) {
+                    container.get(0).addEventListener('mousewheel', MouseWheelHandler, false); //IE9, Chrome, Safari, Oper
+                    container.get(0).addEventListener('wheel', MouseWheelHandler, false); //Firefox
+                } else {
+                    container.get(0).attachEvent('onmousewheel', MouseWheelHandler); //IE 6/7/8
+                }
+            }
+
+
+
+            $(window).on("keydown", function (a) {
                 let dir = ( 38 === a.keyCode || 37 === a.keyCode ) ? 1 : ( 40 === a.keyCode || 39 === a.keyCode ) && -1;
 
-                (!!dir) ? slideAnimate(dir) : '';
-            }
-        });
+                if ( answersRun ) {
+                    let dir = ( 38 === a.keyCode || 37 === a.keyCode ) ? 1 : ( 40 === a.keyCode || 39 === a.keyCode ) && -1;
 
-        function slideAnimate(dir) {
-            if ( scrolling || (dir === 0) ) { return };
-
-
-            scrolling = true;
-
-            (dir === -1) ? ++stage : --stage;
-
-            if ( stage < 1 ) {
-                stage = 1;
-                $.fn.pagepiling.moveSectionUp();
-                $.fn.pagepiling.setAllowScrolling(true);
-                $.fn.pagepiling.setKeyboardScrolling(true);
-            } else if ( stage > 6 ) {
-                stage = 6;
-                $.fn.pagepiling.moveSectionDown();
-                $.fn.pagepiling.setAllowScrolling(true);
-                $.fn.pagepiling.setKeyboardScrolling(true);
-            } else {
-                wrap.attr('data-stage', stage);
-            }
-
-            cardsStage = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
-
-            setTriggerPopupBtnIndex(stage, cardsStage);
-
-            clearMouseWheel();
-
-            setTimeout(function () {
-                scrolling = false;
-            }, 500);
-        };
+                    (!!dir && !isMoving()) ? slideAnimate(dir) : '';
+                }
+            });
 
 
-        function cardsAnimate(dir) {
-            if ( scrolling || (dir === 0) ) { return };
+            var el = wrap[0];
+
+            swipedetect(el, function(swipedir, e){
+                //swipedir contains either "none", "left", "right", "top", or "down"
+
+                dir = ( ( swipedir === 'left' ) || ( swipedir === 'up' ) ) ? -1 :
+                    ( ( swipedir === 'right' ) || ( swipedir === 'down' ) ) ? 1 : 0;
+
+                let obj = $(e);
+
+                let animFunction =  (!obj.closest('.s-answers__cards').length) ? slideAnimate : cardsAnimate;
+
+                console.log(e, animFunction, swipedir , dir);
+
+                // slideAnimate(dir);
+                (!!dir && !isMoving()) ? animFunction(dir) : '';
+            });
+
+            // var elCards = cards[0];
+            //
+            // swipedetect(el, function(swipedir, e){
+            //     //swipedir contains either "none", "left", "right", "top", or "down"
+            //
+            //     dir = ( ( swipedir === 'left' ) || ( swipedir === 'up' ) ) ? -1 :
+            //         ( ( swipedir === 'right' ) || ( swipedir === 'down' ) ) ? 1 : 0;
+            //
+            //     console.log(e);
+            //
+            //     // slideAnimate(dir);
+            //     (!!dir && !isMoving()) ? slideAnimate(dir) : '';
+            // });
 
 
-            scrolling = true;
+            // function slideAnimate(dir) {
+            //     if ( scrolling || (dir === 0) ) { return };
+            //
+            //     scrolling = true;
+            //
+            //     (dir === -1) ? ++stage : --stage;
+            //
+            //     if ( stage < 1 ) {
+            //         stage = 1;
+            //         $.fn.pagepiling.moveSectionUp();
+            //         $.fn.pagepiling.setAllowScrolling(true);
+            //         $.fn.pagepiling.setKeyboardScrolling(true);
+            //     } else if ( stage > 6 ) {
+            //         stage = 6;
+            //         $.fn.pagepiling.moveSectionDown();
+            //         $.fn.pagepiling.setAllowScrolling(true);
+            //         $.fn.pagepiling.setKeyboardScrolling(true);
+            //     } else {
+            //         wrap.attr('data-stage', stage);
+            //     }
+            //
+            //     cardsStage = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
+            //
+            //     setTriggerPopupBtnIndex(stage, cardsStage);
+            //
+            //     clearMouseWheel(wrap);
+            //
+            //     setTimeout(function () {
+            //         scrolling = false;
+            //     }, 2500);
+            // };
 
-            let cardsEl = $('.s-answers__people-item--' + stage).find('.s-answers__cards'),
-                cardsMax = cardsEl.find('.s-answers__card').length
-            ;
 
-            cardsStage = cardsEl.attr('data-stage');
+            // function cardsAnimate(dir) {
+            //     if ( scrolling || (dir === 0) ) { return };
+            //
+            //
+            //     scrolling = true;
+            //
+            //     let cardsEl = $('.s-answers__people-item--' + stage).find('.s-answers__cards'),
+            //         cardsMax = cardsEl.find('.s-answers__card').length
+            //     ;
+            //
+            //     cardsStage = cardsEl.attr('data-stage');
+            //
+            //     (dir === -1) ? ++cardsStage : --cardsStage;
+            //
+            //     if ( cardsStage < 1 ) {
+            //         cardsStage = cardsMax;
+            //     } else if ( cardsStage > cardsMax ) {
+            //         cardsStage = 1;
+            //     }
+            //
+            //
+            //     setCardsStage(cardsEl, stage, cardsStage);
+            //
+            //
+            //
+            //     clearMouseWheel(cards);
+            //
+            //     setTimeout(function () {
+            //         scrolling = false;
+            //     }, 1300);
+            // };
 
-            (dir === -1) ? ++cardsStage : --cardsStage;
-
-            if ( cardsStage < 1 ) {
-                cardsStage = cardsMax;
-            } else if ( cardsStage > cardsMax ) {
-                cardsStage = 1;
-            }
 
 
-            setCardsStage(cardsEl, stage, cardsStage);
+            function setCardsStage (element, stage, cardsStage) {
+                element.attr('data-stage', cardsStage);
 
+                setTriggerPopupBtnIndex(stage, cardsStage);
 
+                $('.s-answers__card').removeClass('hover');
 
-            clearMouseWheel();
+                $('.s-answers__people-item--' + stage + ' .s-answers__card--' + cardsStage).addClass('hover')
 
-            setTimeout(function () {
-                scrolling = false;
-            }, 300);
-        };
+            };
 
+            function setTriggerPopupBtnIndex (stage, cardsStage) {
+                // let cadrsCurrentIndex = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
 
+                $('.js-answers-popup-trigger-btn').attr('data-index', stage + '_' + cardsStage);
+            };
 
-        function setCardsStage (element, stage, cardsStage) {
-            element.attr('data-stage', cardsStage);
-
-            setTriggerPopupBtnIndex(stage, cardsStage);
-
-            $('.s-answers__card').removeClass('hover');
-
-            $('.s-answers__people-item--' + stage + ' .s-answers__card--' + cardsStage).addClass('hover')
-
-        };
-
-        function setTriggerPopupBtnIndex (stage, cardsStage) {
-            // let cadrsCurrentIndex = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
-
-            $('.js-answers-popup-trigger-btn').attr('data-index', stage + '_' + cardsStage);
-        };
+        }
 
 
         function personPopup() {
@@ -421,7 +650,7 @@ $(document).ready(function () {
 
         };
 
-        personPopup();
+
 
 
     };
@@ -432,7 +661,9 @@ $(document).ready(function () {
 
 
 
-    function clearMouseWheel() {
+    function clearMouseWheel(el) {
+
+        el.stop().clearQueue();
         $(window).stop().clearQueue();
         $(document).stop().clearQueue();
         $('html', 'body').stop().clearQueue();
@@ -440,3 +671,79 @@ $(document).ready(function () {
 
 });
 
+
+
+function devMsg(msg) {
+
+
+    var el = document.createElement("p");
+    el.innerText = msg;
+
+    // $('.dev-msg').append(el);
+    // $('.dev-msg').show();
+
+    setTimeout(function () {
+        el.remove();
+
+        if ( !$('.dev-msg p').length ) {
+            $('.dev-msg').hide();
+        };
+
+    }, 3000);
+};
+
+
+
+
+function swipedetect(el, callback){
+
+    let  touchsurface = el,
+        swipedir,
+        startX,
+        startY,
+        distX,
+        distY,
+        threshold = 150, //required min distance traveled to be considered swipe
+        restraint = 100, // maximum distance allowed at the same time in perpendicular direction
+        allowedTime = 300, // maximum time allowed to travel that distance
+        elapsedTime,
+        startTime,
+        handleswipe = callback || function(swipedir, e){},
+        startEvent ;
+
+
+    touchsurface.addEventListener('touchstart', function(e){
+        let touchobj = e.changedTouches[0]
+        swipedir = 'none'
+        dist = 0
+        startX = touchobj.pageX
+        startY = touchobj.pageY
+        startTime = new Date().getTime() // record time when finger first makes contact with surface
+        e.preventDefault();
+
+        startEvent = e.target;
+    }, false)
+
+    touchsurface.addEventListener('touchmove', function(e){
+        e.preventDefault() // prevent scrolling when inside DIV
+    }, false)
+
+    touchsurface.addEventListener('touchend', function(e){
+        let touchobj = e.changedTouches[0]
+        distX = touchobj.pageX - startX // get horizontal dist traveled by finger while in contact with surface
+        distY = touchobj.pageY - startY // get vertical dist traveled by finger while in contact with surface
+        elapsedTime = new Date().getTime() - startTime // get time elapsed
+        if (elapsedTime <= allowedTime){ // first condition for awipe met
+            if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint){ // 2nd condition for horizontal swipe met
+                swipedir = (distX < 0)? 'left' : 'right' // if dist traveled is negative, it indicates left swipe
+            }
+            else if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint){ // 2nd condition for vertical swipe met
+                swipedir = (distY < 0)? 'up' : 'down' // if dist traveled is negative, it indicates up swipe
+            }
+        }
+        handleswipe(swipedir, startEvent)
+        e.preventDefault()
+    }, false);
+
+    return startEvent;
+}

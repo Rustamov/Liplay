@@ -17,6 +17,7 @@ html,
 body {
   font-size: 14px;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 
@@ -272,6 +273,7 @@ frame {
     align-items: center;
     position: relative;
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
 
     &-cnt {
@@ -510,6 +512,7 @@ frame {
     position: relative;
     z-index: 1;
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
 
     &-cnt {
@@ -647,6 +650,7 @@ frame {
     position: relative;
     z-index: 1;
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
 
     &-cnt {
@@ -1243,7 +1247,7 @@ frame {
 
   @include media-breakpoint-down(xs) {
     &__line-left {
-      height: 200px;
+      height: 260px;
     }
 
     &__line-right {
@@ -1271,6 +1275,7 @@ frame {
     position: relative;
     z-index: 1;
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
 
     &-cnt {
@@ -1391,6 +1396,10 @@ frame {
     text-align: center;
   }
 
+  &__line-left {
+    display: none;
+    background: none;
+  }
   &__line-right {
     position: absolute;
     z-index: 0;
@@ -1409,6 +1418,9 @@ frame {
   }
 
   @include media-breakpoint-down(md) {
+    padding: 15px 0 14px;
+    box-shadow: 0 11px 14px -11px rgba(0,0,0,.3) inset;
+
     &__logo {
       width: 90px;
     }
@@ -1418,6 +1430,41 @@ frame {
       width: 90px;
       margin: 0 auto 2vh;
     }
+
+    &__copy {
+      font-size: 9px;
+    }
+
+
+      &__line-right {
+      position: absolute;
+      z-index: 0;
+      top: -1px;
+      bottom: auto;
+      right: -1px;
+      width: 106px;
+      height: 28px;
+      background: url(../img/svg/footer-line-right-mob.svg) 100% 0 no-repeat;
+      background-size: 106px 28px;
+      filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.35));
+      pointer-events: none;
+    }
+
+    &__line-left {
+      display: block;
+      position: absolute;
+      z-index: 0;
+      bottom: 0;
+      left: -1px;
+      width: 38px;
+      height: 72px;
+      background: url(../img/svg/footer-line-left-mob.svg) 100% 0 no-repeat;
+      background-size: 38px 72px;
+      filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.35));
+      pointer-events: none;
+    }
+
+
   }
 
 
@@ -1456,6 +1503,7 @@ frame {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   padding: px-to-rem(20);
 
   &__bg {
@@ -1710,9 +1758,19 @@ frame {
       }
     }
 
+    &__bottom {
+
+      &-qr {
+        margin: 0 0 3px;
+      }
+      &-device {
+        margin: 0 0 10px;
+      }
+    }
+
     &__card {
       &-wrap {
-        margin: 0 0 2vh;
+        margin: 0 0 4vh;
       }
 
       width: 165px;
@@ -1733,6 +1791,23 @@ frame {
        }
       }
     }
+
+    &__qr {
+      width: 40px;
+
+    }
+    &__device {
+      &-img {
+        width: 62px;
+      }
+    }
+
+    &__logo {
+      width: 50px;
+
+    }
+
+
   }
 
 }
