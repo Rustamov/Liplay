@@ -422,8 +422,6 @@ $(document).ready(function () {
 
                 let animFunction =  (!obj.closest('.s-answers__cards').length) ? slideAnimate : cardsAnimate;
 
-                console.log(e, animFunction, swipedir , dir);
-
                 // slideAnimate(dir);
                 (!!dir && !isMoving()) ? animFunction(dir) : '';
             });
@@ -510,25 +508,25 @@ $(document).ready(function () {
 
 
 
-            function setCardsStage (element, stage, cardsStage) {
-                element.attr('data-stage', cardsStage);
 
-                setTriggerPopupBtnIndex(stage, cardsStage);
-
-                $('.s-answers__card').removeClass('hover');
-
-                $('.s-answers__people-item--' + stage + ' .s-answers__card--' + cardsStage).addClass('hover')
-
-            };
-
-            function setTriggerPopupBtnIndex (stage, cardsStage) {
-                // let cadrsCurrentIndex = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
-
-                $('.js-answers-popup-trigger-btn').attr('data-index', stage + '_' + cardsStage);
-            };
 
         }
+        function setCardsStage (element, stage, cardsStage) {
+            element.attr('data-stage', cardsStage);
 
+            setTriggerPopupBtnIndex(stage, cardsStage);
+
+            $('.s-answers__card').removeClass('hover');
+
+            $('.s-answers__people-item--' + stage + ' .s-answers__card--' + cardsStage).addClass('hover')
+
+        };
+
+        function setTriggerPopupBtnIndex (stage, cardsStage) {
+            // let cadrsCurrentIndex = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
+
+            $('.js-answers-popup-trigger-btn').attr('data-index', stage + '_' + cardsStage);
+        };
 
         function personPopup() {
             let sound,
