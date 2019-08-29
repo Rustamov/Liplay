@@ -33,6 +33,7 @@ var path = {
         css: 'build/css/',
         img: 'build/img/',
         audio: 'build/audio/',
+        root: 'build/',
         fonts: 'build/fonts/'
     },
     src: { //Пути откуда брать исходники
@@ -59,7 +60,8 @@ var path = {
         ],
         style: 'src/style/**/*.scss',
         img: 'src/img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
-        audio: 'src/audio/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
+        audio: 'src/audio/**/*.*',
+        root: 'src/root/**/*.*',
         fonts: 'src/fonts/**/*.*'
     },
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
@@ -67,6 +69,7 @@ var path = {
         js: 'src/js/**/*.js',
         style: 'src/style/**/*.scss',
         img: 'src/img/**/*.*',
+        root: 'src/root/**/*.*',
         fonts: 'src/fonts/**/*.*'
     },
     clean: './build'
@@ -127,18 +130,25 @@ gulp.task('audio:build', function (done) {
         .pipe(gulp.dest(path.build.audio))
     done();
 });
+gulp.task('root:build', function (done) {
+    gulp.src(path.src.root)
+        .pipe(gulp.dest(path.build.root))
+    done();
+});
 gulp.task('build', gulp.series([
     'html:build',
     'js:build',
     'style:build',
     'fonts:build',
     'audio:build',
+    'root:build',
     'image:build'
 ]));
 gulp.task('watch', function () {
     watch([path.watch.html], gulp.series('html:build') );
     watch([path.watch.style],gulp.series('style:build') );
     watch([path.watch.js], gulp.series('js:build'));
+    watch([path.watch.root], gulp.series('root:build'));
     // watch([path.watch.img],  gulp.series('image:build'));
     watch([path.watch.fonts], gulp.series('fonts:build'));
 });

@@ -1324,6 +1324,7 @@ frame {
   &__images {
     max-width: px-to-rem(1120);
     margin: 0 auto;
+    pointer-events: none;
   }
 
   @media (min-height: 700px) {
@@ -1348,8 +1349,41 @@ frame {
     }
   }
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
+    &__block {
 
+      &-top {
+        display: block;
+        margin: 0 0 20px;
+      }
+
+      &-main {
+        margin: 0 0 -10px;
+      }
+    }
+
+    &__top {
+      &-logo {
+        width: 360px;
+
+      }
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    &__block {
+      position: relative;
+      margin: -7rem 0 0;
+
+      &-top {
+        display: block;
+        margin: 0 0 10px;
+      }
+
+      &-main {
+        margin: 0 0 -10px;
+      }
+    }
 
     &__top {
       &-logo {
