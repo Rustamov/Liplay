@@ -29,6 +29,15 @@
 
 </head>
 <body>
+<style> .preloader-overlay {position: fixed;z-index: 10;top: 0;left: 0;width: 100%;height: 100%;overflow: hidden;background: #dda59f;}  .page-load .preloader-overlay {opacity: 0;top: -100%;-webkit-transition: all 0s, opacity 0.5s, top 0.5s 0.5s;-o-transition: all 0s, opacity 0.5s, top 0.5s 0.5s;transition: all 0s, opacity 0.5s, top 0.5s 0.5s;}  .page-load .preloader-overlay .preloader-icon-wrapper {-webkit-transform: translate(-50%, -70%);-ms-transform: translate(-50%, -70%);-o-transform: translate(-50%, -70%);transform: translate(-50%, -70%);opacity: 0;-webkit-transition: 0.75s;-o-transition: 0.75s;transition: 0.75s}  .preloader-icon-wrapper{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}  .preloader-icon{animation: pulse-preloader 2s infinite;width: 11rem;}  .preloader-icon__img {width: 100%;height: auto;}  @keyframes pulse-preloader{ 0%{transform: scale(0.5);} 50%{transform: scale(1);} 100%{transform: scale(0.5);} }  @media (max-width: 767.98px) {  .preloader-icon {width: 100px;}  }</style>
+<div class="preloader-overlay">
+    <div class="preloader-icon-wrapper">
+        <div class="preloader-icon">
+            <img class="preloader-icon__img" src="img/svg/logo-mini.svg" alt="Instax mini liplay logo" width="220" height="121">
+        </div>
+    </div>
+</div>
+
 <div class="pagepiling">
     <div class="section" id="top">
         <section class="s-top">
@@ -403,8 +412,8 @@
 
                                             <div class="s-answers__people-item s-answers__people-item--6">
                                                 <div class="s-answers__cards" data-stage="1">
-                                                    <div class="s-answers__card s-answers__card--1" data-index="6-1">
-                                                        <img class="s-answers__card-img" src="img/answers/6-1.jpg" alt="Саша Спилберг 4" width="225" height="300">
+                                                    <div class="s-answers__card s-answers__card--1" data-index="6_1">
+                                                        <img class="s-answers__card-img" src="img/answers/6_1.jpg" alt="Саша Спилберг 4" width="225" height="300">
                                                         <span class="s-answers__card-play-icon">
                                                             <svg class="icon icon-music" width="84" height="84">
                                                                 <use xlink:href="#icon-music"></use>
@@ -440,7 +449,8 @@
             <div class="go-to go-to--bottom go-to--s-answers">
                 <div class="go-to__inner">
                     <div class="go-to__btn">
-                        <a class="btn-play js-answers-popup-trigger-btn" href="#" data-index="1_1">
+                        <!-- <a class="btn-play js-answers-popup-trigger-btn" href="https://instaxmini.ru/camera/instax-mini-liplay/" data-index="1_1">-->
+                        <a class="btn-play" href="https://instaxmini.ru/camera/instax-mini-liplay/" target="_blank">
                              <span class="btn-play__icon">
                                  <svg class="icon icon-microphone" width="104" height="104">
                                     <use xlink:href="#icon-microphone"></use>
@@ -470,7 +480,7 @@
                                 </div>
                             </div>
 
-                            <div class="s-inst__block-main">
+                            <div class="s-inst__block-main js-goto-link" data-url="https://www.instagram.com/instaxminiru/">
                                 <div class="s-inst__images">
                                     <!-- inwidget/skins/default.css -->
                                     <iframe class="s-inst__images-frame" src='/inwidget/index.php?adaptive=true&toolbar=false&inline=3&view=9' data-inwidget scrolling='no' frameborder='no'></iframe>
@@ -478,7 +488,7 @@
                             </div>
 
                             <div class="s-inst__block-bottom">
-                                <a class="btn-inst" href="#">
+                                <a class="btn-inst js-inst-link" href="https://www.instagram.com/instaxminiru/" target="_blank">
                                      <span class="btn-inst__icon">
                                          <svg class="icon icon-heart" width="104" height="104">
                                             <use xlink:href="#icon-heart"></use>
@@ -514,6 +524,14 @@
         </section>
     </div>
 </div>
+
+<div class="warning-rotate">
+    <div class="warning-rotate__inner">
+        <div class="warning-rotate__text">Для нормального отображения поверните экран вертикально</div>
+    </div>
+</div>
+
+
 
     <div class="popup-person"  id="popup-person">
         <span class="popup-person__bg"  data-fancybox-close>&nbsp;</span>
@@ -593,7 +611,7 @@
         </symbol>
     </svg>
 
-    <script src="js/scripts.min.js?ver=111"></script>
+    <script src="js/scripts.min.js"></script>
 
 </body>
 </html>

@@ -99,8 +99,8 @@ if(!$inWidget instanceof \inWidget\Core) {
 						default:
 							$thumbnail = $item->small;
 					}
-//					echo '<div class="widget__item"><a class="class="widget__item-link" href="'.$item->link.'" class="image" target="_blank"><span style="background-image:url('.$thumbnail.');">&nbsp;</span></a></div>';
-					echo '<div class="widget__item"><a class="widget__item-link" href="'.$item->link.'" class="image" target="_blank"><img src="'.$thumbnail.'"></a></div>';
+					//echo '<a href="'.$item->link.'" class="image" target="_blank"><span style="background-image:url('.$thumbnail.');">&nbsp;</span></a>';
+                    echo '<div class="widget__item"><a class="widget__item-link" href="'.$item->link.'" class="image" target="_blank"><img src="'.$thumbnail.'"></a></div>';
 					$i++;
 					if($i >= $inWidget->view) break;
 				}

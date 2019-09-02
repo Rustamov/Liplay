@@ -114,6 +114,25 @@ frame {
       bottom: 4vh;
     }
   }
+
+
+  @media (max-width: 767.98px) and (max-height: 550px) {
+    bottom: 115px;
+    &--s-cameras {
+      bottom: 10px;
+    }
+  }
+
+  @media (max-width: 767.98px) and (max-height: 480px) {
+    bottom: 110px;
+    width: 64px;
+    margin-left: -32px;
+
+    &--s-cameras {
+      bottom: 10px;
+    }
+
+  }
 }
 
 
@@ -126,6 +145,9 @@ frame {
 
   &--bottom {
     bottom: 3%;
+  }
+  &--s-cameras {
+    z-index: 1;
   }
 
   &__inner {
@@ -177,9 +199,15 @@ frame {
     z-index: 0;
     bottom: 4vh;
 
+    &--s-cameras {
+      z-index: 1;
+    }
+
     &--s-answers {
       display: none;
     }
+
+
 
     &__inner {
       z-index: 0;
@@ -259,6 +287,10 @@ frame {
         background-size: contain;
       }
     }
+  }
+
+  @media (max-width: 767.98px) and (max-height: 550px) {
+    bottom: 0;
   }
 }
 
@@ -449,6 +481,12 @@ frame {
 
 
   @include media-breakpoint-down(sm) {
+    &__block {
+      position: relative;
+      z-index: 1;
+      height: 320px;
+    }
+
     &__logo {
       width: 260px;
     }
@@ -483,8 +521,6 @@ frame {
 
         background-size: contain;
 
-
-
         @for $i from 1 through 4 {
           &[data-stage="#{$i}"] {
             opacity: 1;
@@ -493,9 +529,28 @@ frame {
         }
       }
     }
+  }
 
+
+  @media (max-width: 767.98px) and (max-height: 550px) {
+    &__block {
+      height: 300px;
+    }
 
   }
+
+  @media (max-width: 767.98px) and (max-height: 480px) {
+    &__block {
+      height: 290px;
+    }
+  }
+
+
+
+
+
+
+
 }
 
 
@@ -1393,6 +1448,33 @@ frame {
     }
   }
 
+  @media (max-width: 767.98px) and (max-height: 650px) {
+    &__top-logo {
+      width: 230px;
+    }
+    &__images {
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 767.98px) and (max-height: 520px) {
+
+    &__top-logo {
+      width: 210px;
+    }
+
+    &__block {
+      margin: -6rem 0 0;
+
+      &-top {
+        margin-bottom: 5px;
+      }
+      &-main {
+        margin: 0 0 -35px;
+      }
+    }
+  }
+
 
 }
 
@@ -1499,6 +1581,10 @@ frame {
     }
 
 
+  }
+
+  @media (max-width: 767.98px) and (max-height: 650px) {
+    padding: 8px 0 6px;
   }
 
 
@@ -1844,6 +1930,39 @@ frame {
 
   }
 
+}
+
+.warning-rotate {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  background: #252525;
+
+  &__inner {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__text {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+}
+@media screen and (orientation: landscape) and (max-width: 767.98px) {
+  .warning-rotate {
+    display: block;
+  }
+}
+
+.js-goto-link {
+  cursor: pointer;
 }
 
 

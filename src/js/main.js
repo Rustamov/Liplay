@@ -10,19 +10,25 @@ window.addEventListener('resize', () => {
 });
 
 
-var wWidth = 0;
+let $body,
+    wWidth = 0,
     W_SM = 576
     W_MD = 768,
     W_LG = 992,
     W_XL = 1200,
 
     LOADER_HTML = '<div class="overlay-loader"><div class="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>'
+
 ;
 
 
 
 
 $(document).ready(function () {
+    $body = $('body');
+
+    $body.addClass("page-load");
+
     wWidth =  $(window).width();
 
     $(window).on('resize', function() {
@@ -117,6 +123,22 @@ $(document).ready(function () {
         camGif.init();
     }
 
+    if ( $('.pagepiling').length ) {
+        pagepilingInit();
+    }
+
+    if ( $('.s-answers').length ) {
+        answers();
+    };
+
+    $body.on('click touch', '.js-goto-link', function (e) {
+        let url = $(this).data('url');
+
+        window.open(url);
+
+    });
+
+
     function pagepilingInit() {
         $('.pagepiling').pagepiling({
             menu: null,
@@ -150,6 +172,8 @@ $(document).ready(function () {
             afterRender: function () {
                 let initAnchorLink = $('.pp-section.active').attr('id');
 
+                $body.addClass('page-load');
+
                 pagepilingLoadStep(initAnchorLink);
             },
         });
@@ -174,9 +198,7 @@ $(document).ready(function () {
         }
     };
 
-    if ( $('.pagepiling').length ) {
-        pagepilingInit();
-    }
+
 
     function answers () {
         let wrap = $('.s-answers'),
@@ -188,48 +210,6 @@ $(document).ready(function () {
             cardsStage = 1;
 
 
-
-
-        // wrap.on('touchstart', function (e){
-        //     touchY = e.originalEvent.touches[0].clientY;
-        // });
-        //
-        // wrap.on('touchend', function (e) {
-        //     let newTouchY = e.originalEvent.changedTouches[0].clientY;
-        //
-        //     dir = (touchY > newTouchY + 5) ? -1 :
-        //         (touchY < newTouchY - 5) ? 1 : 0;
-        //
-        //     slideAnimate(dir);
-        //
-        //     devMsg('touchend  -  .s-answers');
-        //     console.log('touchend  -  .s-answers', dir);
-        //
-        //     // console.log(dir);
-        // });
-
-
-
-        //         wrap.on("mousewheel", function (e) {
-        //             if ( scrolling ) { return };
-        //
-        // ;
-        //
-        //
-        //             let obj = $(e.target);
-        //
-        //             if (!obj.closest('.s-answers__cards').length) {
-        //                 slideAnimate(e.deltaY);
-        //                 devMsg('mousewheel  -  .s-answers')
-        //             } else  {
-        //                 cardsAnimate(e.deltaY);
-        //                 devMsg('mousewheel  -  .s-answers__cards')
-        //             }
-        //
-        //             devMsg("mousewheel -" + e.deltaX  + '  ' + '  ' +  e.deltaY + '  ' + e.deltaFactor);
-        //
-        //
-        //         });
 
         scrollScript();
 
@@ -256,8 +236,6 @@ $(document).ready(function () {
                 let obj = $(e.target);
 
                 let animFunction =  (!obj.closest('.s-answers__cards').length) ? slideAnimate : cardsAnimate;
-
-
 
 
                 let horizontalDetection = typeof e.wheelDeltaX !== 'undefined' || typeof e.deltaX !== 'undefined';
@@ -399,7 +377,7 @@ $(document).ready(function () {
 
 
 
-            $(window).on("keydown", function (a) {
+            $body.on("keydown", function (a) {
                 let dir = ( 38 === a.keyCode || 37 === a.keyCode ) ? 1 : ( 40 === a.keyCode || 39 === a.keyCode ) && -1;
 
                 if ( answersRun ) {
@@ -425,92 +403,8 @@ $(document).ready(function () {
                 // slideAnimate(dir);
                 (!!dir && !isMoving()) ? animFunction(dir) : '';
             });
+        };
 
-            // var elCards = cards[0];
-            //
-            // swipedetect(el, function(swipedir, e){
-            //     //swipedir contains either "none", "left", "right", "top", or "down"
-            //
-            //     dir = ( ( swipedir === 'left' ) || ( swipedir === 'up' ) ) ? -1 :
-            //         ( ( swipedir === 'right' ) || ( swipedir === 'down' ) ) ? 1 : 0;
-            //
-            //     console.log(e);
-            //
-            //     // slideAnimate(dir);
-            //     (!!dir && !isMoving()) ? slideAnimate(dir) : '';
-            // });
-
-
-            // function slideAnimate(dir) {
-            //     if ( scrolling || (dir === 0) ) { return };
-            //
-            //     scrolling = true;
-            //
-            //     (dir === -1) ? ++stage : --stage;
-            //
-            //     if ( stage < 1 ) {
-            //         stage = 1;
-            //         $.fn.pagepiling.moveSectionUp();
-            //         $.fn.pagepiling.setAllowScrolling(true);
-            //         $.fn.pagepiling.setKeyboardScrolling(true);
-            //     } else if ( stage > 6 ) {
-            //         stage = 6;
-            //         $.fn.pagepiling.moveSectionDown();
-            //         $.fn.pagepiling.setAllowScrolling(true);
-            //         $.fn.pagepiling.setKeyboardScrolling(true);
-            //     } else {
-            //         wrap.attr('data-stage', stage);
-            //     }
-            //
-            //     cardsStage = $('.s-answers__people-item--' + stage).find('.s-answers__cards').attr('data-stage');
-            //
-            //     setTriggerPopupBtnIndex(stage, cardsStage);
-            //
-            //     clearMouseWheel(wrap);
-            //
-            //     setTimeout(function () {
-            //         scrolling = false;
-            //     }, 2500);
-            // };
-
-
-            // function cardsAnimate(dir) {
-            //     if ( scrolling || (dir === 0) ) { return };
-            //
-            //
-            //     scrolling = true;
-            //
-            //     let cardsEl = $('.s-answers__people-item--' + stage).find('.s-answers__cards'),
-            //         cardsMax = cardsEl.find('.s-answers__card').length
-            //     ;
-            //
-            //     cardsStage = cardsEl.attr('data-stage');
-            //
-            //     (dir === -1) ? ++cardsStage : --cardsStage;
-            //
-            //     if ( cardsStage < 1 ) {
-            //         cardsStage = cardsMax;
-            //     } else if ( cardsStage > cardsMax ) {
-            //         cardsStage = 1;
-            //     }
-            //
-            //
-            //     setCardsStage(cardsEl, stage, cardsStage);
-            //
-            //
-            //
-            //     clearMouseWheel(cards);
-            //
-            //     setTimeout(function () {
-            //         scrolling = false;
-            //     }, 1300);
-            // };
-
-
-
-
-
-        }
         function setCardsStage (element, stage, cardsStage) {
             element.attr('data-stage', cardsStage);
 
@@ -532,11 +426,9 @@ $(document).ready(function () {
             let sound,
                 soundSrc = [];
 
-            $(document).on('click touch', '.s-answers__card, .js-answers-popup-trigger-btn', function (e) {
-                e.preventDefault();
-
+            function popupTriggerHandler(triggerEl) {
                 let sound,
-                    popupTrigger = $(this),
+                    popupTrigger = triggerEl,
                     index = popupTrigger.attr('data-index'),
                     popupTriggerHtml = popupTrigger.html(),
                     imgSrc = 'img/answers/' + index + '.jpg'
@@ -551,7 +443,6 @@ $(document).ready(function () {
 
 
 
-
                 popupTrigger.append(LOADER_HTML).addClass('btn-loader').attr('disabled', 'disabled');
 
 
@@ -559,12 +450,20 @@ $(document).ready(function () {
                     openModal();
                     popupTrigger.html(popupTriggerHtml).removeClass('btn-loader').removeAttr('disabled');
                 }, 100);
+            };
+
+            $body.on('click touch', '.js-answers-popup-trigger-btn', function (e) {
+                e.preventDefault();
+
+                popupTriggerHandler($(this));
 
             });
 
+            $body.on('click touch', '.s-answers__card', function (e) {
+                e.preventDefault();
 
-            $(document).on('click touch', '.s-answers__card', function (e) {
-                let index = $(this).attr('data-index'),
+                let $this = $(this),
+                    index = $(this).attr('data-index'),
                     elIndex = $(this).index() + 1;
 
 
@@ -573,10 +472,22 @@ $(document).ready(function () {
 
                 cardsEl.attr('data-stage', cardsStage);
 
+
+                setTimeout(function () {
+                    popupTriggerHandler($this);
+                }, 300);
+
+
                 setTriggerPopupBtnIndex(index);
+
             });
 
-            $(document).on('click touch', '.js-person-audio-play-trigger', function (e) {
+
+            $body.on('click touch', '.s-answers__card', function (e) {
+
+            });
+
+            $body.on('click touch', '.js-person-audio-play-trigger', function (e) {
                 playPersonAudio(soundSrc);
             });
 
@@ -653,43 +564,12 @@ $(document).ready(function () {
 
     };
 
-    if ( $('.s-answers').length ) {
-       answers();
-    };
 
 
 
-    function clearMouseWheel(el) {
 
-        el.stop().clearQueue();
-        $(window).stop().clearQueue();
-        $(document).stop().clearQueue();
-        $('html', 'body').stop().clearQueue();
-    };
 
 });
-
-
-
-function devMsg(msg) {
-
-
-    var el = document.createElement("p");
-    el.innerText = msg;
-
-    // $('.dev-msg').append(el);
-    // $('.dev-msg').show();
-
-    setTimeout(function () {
-        el.remove();
-
-        if ( !$('.dev-msg p').length ) {
-            $('.dev-msg').hide();
-        };
-
-    }, 3000);
-};
-
 
 
 
@@ -701,7 +581,7 @@ function swipedetect(el, callback){
         startY,
         distX,
         distY,
-        threshold = 150, //required min distance traveled to be considered swipe
+        threshold = 30, //required min distance traveled to be considered swipe
         restraint = 100, // maximum distance allowed at the same time in perpendicular direction
         allowedTime = 300, // maximum time allowed to travel that distance
         elapsedTime,
@@ -717,13 +597,13 @@ function swipedetect(el, callback){
         startX = touchobj.pageX
         startY = touchobj.pageY
         startTime = new Date().getTime() // record time when finger first makes contact with surface
-        e.preventDefault();
+        //e.preventDefault();
 
         startEvent = e.target;
     }, false)
 
     touchsurface.addEventListener('touchmove', function(e){
-        e.preventDefault() // prevent scrolling when inside DIV
+        //e.preventDefault() // prevent scrolling when inside DIV
     }, false)
 
     touchsurface.addEventListener('touchend', function(e){
@@ -740,7 +620,7 @@ function swipedetect(el, callback){
             }
         }
         handleswipe(swipedir, startEvent)
-        e.preventDefault()
+        // e.preventDefault()
     }, false);
 
     return startEvent;
