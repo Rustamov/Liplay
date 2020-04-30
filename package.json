@@ -24,7 +24,7 @@
     "gulp-watch": "^5.0.1",
     "howler": "^2.1.2",
     "imagemin-pngquant": "^8.0.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-form-validator": "^2.3.79",
     "jquery-mousewheel": "^3.1.13",
     "jquery.maskedinput": "^1.4.1",
